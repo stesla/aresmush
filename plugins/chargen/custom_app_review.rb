@@ -22,6 +22,17 @@ module AresMUSH
       #
       # You can also use other built-in chargen status messages, like t('chargen.not_set').  
       # See https://www.aresmush.com/tutorials/config/chargen.html for details.
+
+      dateprof = char.dateprof
+
+      if (dateprof.length > 0)
+        dateprofmsg = t('chargen.ok')
+      else
+        dateprofmsg = t('chargen.oops_missing', :missing => "Dating Profile")
+      end
+
+      return (Chargen.format_review_status "\nChecking Dating Profile.", dateprofmsg)
+
     end
   end
 end
