@@ -11,7 +11,7 @@ module AresMUSH
 
             def handle 
                 ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
-                    template = BorderedDisplayTemplate.new model.dateprof, "#{model.name}'s Dating Profile"
+                    template = BorderedDisplayTemplate.new model.dateprof, "#{model.name}'s Dating Profile:"
                     client.emit template.render
                 end
             end
