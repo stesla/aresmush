@@ -3,7 +3,7 @@ module AresMUSH
     def self.custom_app_review(char)
             
       # If you don't want to have any custom app review steps, return nil
-      return nil
+      # return nil
             
       # Otherwise, return a message to display.  Here's an example of how to 
       # give an alert if the character has chosen an invalid position for their 
