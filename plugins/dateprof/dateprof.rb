@@ -22,6 +22,13 @@ module AresMUSH
                 else 
                     return DateProfCmd
                 end
+            when "swipe"
+              case cmd.switch
+              when "list"
+                return SwipeListCmd
+              else
+                return SwipeCmd
+              end
             end
         end
 
