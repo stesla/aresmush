@@ -63,7 +63,7 @@ module AresMUSH
         ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
           enactor.swipe model, self.type
         end
-        client.emit_success t('dateprof.swipe_success')
+        client.emit_success t('global.done')
       end
     end
   end

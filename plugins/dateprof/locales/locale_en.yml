@@ -5,7 +5,6 @@ en:
     dateprof_title: "Dating Profile"
     invalid_swipe_type: "Invalid swipe type. It must be one of: interested, curious, or skip."
     no_more_profiles: "You have swiped on everybody! Take a break."
-    swipe_success: "Swiped!"
     admin_no_swiping: "Admins can't swipe."
     must_be_approved: "You must be approved to swipe."
-
+    missed_must_swipe: "You must swipe on someone before marking them as a missed connection."

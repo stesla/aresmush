@@ -6,8 +6,10 @@ module AresMUSH
       reference :character, 'AresMUSH::Character'
       reference :target, 'AresMUSH::Character'
       attribute :type, :type => DataType::Symbol
+      attribute :missed, :type => DataType::Boolean, :default => false
 
       index :type
+      index :missed
 
       def self.check_type(type)
         return nil if [:interested, :curious, :skip].include? type
