@@ -18,7 +18,6 @@ module AresMUSH
     end
 
     def swipe(target, type)
-      Global.logger.debug("Swipe: #{self.name} --[#{type}]--> #{target.name}")
       swipe = swipe_for(target)
       if swipe.nil?
         swipe = AresMUSH::DateProf::Swipe.create(
@@ -30,7 +29,6 @@ module AresMUSH
       else
         swipe.update(type: type)
       end 
-      Global.logger.debug(swipe)
     end
 
     def swipe_for(target)
