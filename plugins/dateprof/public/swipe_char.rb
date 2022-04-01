@@ -36,5 +36,22 @@ module AresMUSH
     def swipe_for(target)
       AresMUSH::DateProf::Swipe.find(character_id: self.id, target_id: target.id).first
     end
+
+    def match_for(target)
+      me = self.swipe_for(target)
+      them = target.swipe_for(self)
+
+      if (me.nil? || me.type == :skip) && them && them.missed
+        return :missed
+      elsif me.nil? or them.nil?
+        return nil
+      end
+      case [me.type, them.type]
+      when [:interested, :interested] then :solid
+      when [:interested, :curious], [:curious, :interested] then :okay
+      when [:curious, :curious] then :maybe
+      else nil
+      end
+    end
   end
 end

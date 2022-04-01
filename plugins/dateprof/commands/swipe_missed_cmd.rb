@@ -12,7 +12,11 @@ module AresMUSH
       def handle
         if self.name.blank?
           title = "#{enactor_name}'s Missed Connections"
-          list = Swipe.find(target_id: enactor.id, missed: true).map {|s| s.character.name}
+          list = Swipe.find(target_id: enactor.id, missed: true).select do |swipe|
+            enactor.match_for(swipe.character) == :missed
+          end.map do |swipe|
+            swipe.character.name
+          end
           template = BorderedListTemplate.new list, title
           client.emit template.render
         else

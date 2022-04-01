@@ -18,6 +18,18 @@ module AresMUSH
         Demographics.visible_demographics(@char, @enactor).select { |d| d != 'birthdate' }
       end
       
+      def dating_match
+        match = @enactor.match_for(@char) || :none
+        color = case match
+                when :solid then "%xh%xb"
+                when :okay then "%xh%xc"
+                when :maybe then "%xh%xg"
+                when :missed then "%xh%xy"
+                else ""
+                end
+        "#{color}#{match.to_s.titlecase}"
+      end
+
       def demographic(d)
         @char.demographic(d)
       end
