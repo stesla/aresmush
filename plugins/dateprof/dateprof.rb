@@ -39,6 +39,10 @@ module AresMUSH
             case request.cmd
             when "matchFor"
               return MatchForRequestHandler
+            when "nextDatingProfile"
+              return NextDatingProfileRequestHandler
+            when "swipeFor"
+              return SwipeForRequestHandler
             end
             nil
         end
