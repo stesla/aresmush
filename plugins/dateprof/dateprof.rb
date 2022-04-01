@@ -32,8 +32,15 @@ module AresMUSH
                 return SwipeCmd
               end
             end
+            nil
         end
 
-        nil
+        def self.get_web_request_handler(request)
+            case request.cmd
+            when "matchFor"
+              return MatchForRequestHandler
+            end
+            nil
+        end
     end
 end
