@@ -3,6 +3,14 @@ module AresMUSH
     list :dating_queue, 'AresMUSH::Character'
     collection :swipes, 'AresMUSH::DateProf::Swipe'
 
+    def missed_connections
+      AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
+        self.match_for(swipe.character) == :missed
+      end.map do |swipe|
+        swipe.character
+      end
+    end
+
     def next_dating_profile
       self.refresh_dating_queue! if self.dating_queue.empty?
       return self.dating_queue.first
@@ -33,6 +41,14 @@ module AresMUSH
 
     def swipe_for(target)
       AresMUSH::DateProf::Swipe.find(character_id: self.id, target_id: target.id).first
+    end
+
+    def swipes_of_type(type)
+      if type == :missed
+        self.swipes.find(missed: true)
+      else
+        self.swipes.find(type: type)
+      end
     end
 
     def match_for(target)

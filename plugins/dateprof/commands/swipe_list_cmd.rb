@@ -16,11 +16,7 @@ module AresMUSH
       
       def handle
         title = "#{enactor_name}'s #{self.type.to_s.titlecase} Swipes"
-        list = if self.type == :missed
-                 enactor.swipes.find(missed: true).map {|s| s.target.name}
-               else
-                 enactor.swipes.find(type: self.type).map {|s| s.target.name}
-               end
+        list = enactor.swipes_of_type(self.type).map {|s| s.target.name}
         template = BorderedListTemplate.new list, title
         client.emit template.render
       end

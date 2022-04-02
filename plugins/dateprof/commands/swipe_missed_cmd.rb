@@ -12,11 +12,7 @@ module AresMUSH
       def handle
         if self.name.blank?
           title = "#{enactor_name}'s Missed Connections"
-          list = Swipe.find(target_id: enactor.id, missed: true).select do |swipe|
-            enactor.match_for(swipe.character) == :missed
-          end.map do |swipe|
-            swipe.character.name
-          end
+          list = enactor.missed_connections.map {|char| char.name}
           template = BorderedListTemplate.new list, title
           client.emit template.render
         else
@@ -25,7 +21,7 @@ module AresMUSH
             if swipe.nil?
               client.emit_failure t('dateprof.missed_must_swipe')
             else
-              swipe.update(missed: true)
+              swipe.update(missed: !swipe.missed)
               client.emit_success t('global.done')
             end
           end
