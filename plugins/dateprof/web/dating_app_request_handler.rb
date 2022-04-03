@@ -7,6 +7,10 @@ module AresMUSH
         error = Website.check_login(request)
         return error if error
 
+        if request.enactor.is_admin?
+          return {error: t('dateprof.admin_no_swiping')}
+        end
+
         self.enactor = request.enactor
         {
           profile: profile,
