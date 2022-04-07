@@ -9,6 +9,11 @@ module AresMUSH
         self.type = downcase_arg(cmd.args).to_sym
       end
 
+      def check_admin
+        return t('dateprof.admin_no_swiping') if enactor.is_admin?
+        return nil
+      end
+
       def check_type
         return nil if self.type == :missed
         Swipe.check_type(self.type)

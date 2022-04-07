@@ -12,11 +12,14 @@ module AresMUSH
         return error if error
 
         type = request.args[:type].to_sym
-        error = Swipe.check_type(type)
-        return { error: error } if error
+        unless type == :missed
+          error = Swipe.check_type(type)
+          return { error: error } if error
+        end
 
         enactor = request.enactor
-        enactor.swipe(char, type)
+        error = enactor.swipe(char, type)
+        return { error: error } if error
         match = enactor.match_for(char)
         { match: match ? match.to_s.titlecase : nil }
       end

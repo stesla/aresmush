@@ -17,14 +17,14 @@ module AresMUSH
           client.emit template.render
         else
           ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
-            our_swipe = enactor.swipe_for(model)
-            their_swipe = model.swipe_for(enactor)
-            if !our_swipe || our_swipe.type == :skip
-              client.emit_failure t('dateprof.missed_must_swipe')
-            elsif their_swipe && their_swipe.type != :skip
-              client.emit_failure t('dateprof.already_matched')
+            if enactor.is_admin?
+              client.emit_failure t('dateprof.admin_no_swiping')
+              return
+            end
+            error = enactor.swipe(model, :missed)
+            if error
+              client.emit_failure error
             else
-              our_swipe.update(missed: !our_swipe.missed)
               client.emit_success t('global.done')
             end
           end
