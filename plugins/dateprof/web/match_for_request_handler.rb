@@ -12,8 +12,16 @@ module AresMUSH
         error = Website.check_login(request, true)
         return error if error
 
+        if (enactor.is_admin?)
+          return {}
+        end
+
         match = enactor.match_for(char)
-        { match: match ? match.to_s.titlecase : nil }
+        swipe = enactor.swipe_for(char)
+        {
+          match: match ? match.to_s.titlecase : nil,
+          swipe: swipe ? { type: swipe.type.to_s.titlecase,  missed: swipe.missed } : nil,
+        }
       end
     end
   end

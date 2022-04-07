@@ -36,11 +36,19 @@ module AresMUSH
         self.dating_queue.delete(target)
       else
         swipe.update(type: type)
+        if type == :skip
+          swipe.update(missed: false)
+        end
       end 
+
+      swipe = target.swipe_for(self)
+      if swipe && swipe.missed && type != :skip
+        swipe.update(missed: false)
+      end
     end
 
     def swipe_for(target)
-      AresMUSH::DateProf::Swipe.find(character_id: self.id, target_id: target.id).first
+      self.swipes.find(target_id: target.id).first
     end
 
     def swipes_of_type(type)
