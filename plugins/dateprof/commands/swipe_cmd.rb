@@ -24,6 +24,7 @@ module AresMUSH
       end
 
       def check_type
+        return nil if self.type == :missed
         Swipe.check_type(self.type) unless self.type.blank?
       end
 
@@ -61,9 +62,13 @@ module AresMUSH
 
       def swipe_target
         ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
-          enactor.swipe model, self.type
+          error = enactor.swipe(model, self.type)
+          if error
+            client.emit_failure error
+          else
+            client.emit_success t('global.done')
+          end
         end
-        client.emit_success t('global.done')
       end
     end
   end

@@ -37,11 +37,7 @@ module AresMUSH
       end
   
       def matches
-        enactor.swipes.inject({}) do |h, swipe|
-          match = enactor.match_for(swipe.target)
-          (h[match] ||= []) << swipe.target if match
-          h
-        end.map do |type, characters|
+        enactor.matches.map do |type, characters|
           format_char_list(type, characters)
         end
       end

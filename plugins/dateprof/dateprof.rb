@@ -26,9 +26,11 @@ module AresMUSH
               case cmd.switch
               when "list"
                 return SwipeListCmd
+              when "matches"
+                return SwipeMatchesCmd
               when "missed"
                 return SwipeMissedCmd
-              else
+              when nil
                 return SwipeCmd
               end
             end

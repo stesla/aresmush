@@ -60,6 +60,14 @@ module AresMUSH
       end
     end
 
+    def matches
+      self.swipes.inject({}) do |h, swipe|
+        match = self.match_for(swipe.target)
+        (h[match] ||= []) << swipe.target if match
+        h
+      end
+    end
+
     def match_for(target)
       me = self.swipe_for(target)
       them = target.swipe_for(self)
