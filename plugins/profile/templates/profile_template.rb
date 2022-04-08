@@ -7,6 +7,7 @@ module AresMUSH
       def initialize(enactor, char)
         @char = char
         @enactor = enactor
+        @markdown = MarkdownFormatter.new
         super File.dirname(__FILE__) + "/profile.erb"
       end
 
@@ -28,10 +29,14 @@ module AresMUSH
                 when :solid then "%xh%xb"
                 when :okay then "%xh%xc"
                 when :maybe then "%xh%xg"
-                when :missed then "%xh%xy"
+                when :missed_connection then "%xh%xy"
                 else ""
                 end
-        "#{color}#{match.to_s.titlecase}%xn"
+        "#{color}#{match.to_s.humanize.titlecase}%xn"
+      end
+
+      def dating_profile
+        @markdown.to_mush(@char.dateprof)
       end
 
       def dating_swipe?
@@ -41,7 +46,7 @@ module AresMUSH
       def dating_swipe
         swipe = @enactor.swipe_for(@char)
         return "None" if swipe.nil?
-        return "#{swipe.type.to_s.titlecase}#{swipe.missed ? ' (Missed)' : ''}"
+        return "#{swipe.type.to_s.titlecase}#{swipe.missed ? ' (Missed Connection)' : ''}"
       end
 
       def demographic(d)

@@ -2,6 +2,7 @@ module AresMUSH
   module DateProf
     class SwipeCmd
       include CommandHandler
+      include DateProf::SwipeType
 
       attr_accessor :name, :type
 
@@ -11,9 +12,9 @@ module AresMUSH
           args = cmd.parse_args(ArgParser.arg1_equals_arg2)
 
           self.name = titlecase_arg(args.arg1)
-          self.type = downcase_arg(args.arg2).to_sym
+          self.type = swipe_type_arg(args.arg2)
         else
-          self.type = downcase_arg(cmd.args).to_sym
+          self.type = swipe_type_arg(cmd.args)
         end
       end
 
@@ -24,7 +25,6 @@ module AresMUSH
       end
 
       def check_type
-        return nil if self.type == :missed
         Swipe.check_type(self.type) unless self.type.blank?
       end
 
@@ -65,8 +65,16 @@ module AresMUSH
           error = enactor.swipe(model, self.type)
           if error
             client.emit_failure error
+          elsif self.type == :missed_connection
+            swipe = enactor.swipe_for(model)
+            client.emit_success(swipe.missed ? t('dateprof.missed_on') : t('dateprof.missed_off'))
           else
-            client.emit_success t('global.done')
+            match = enactor.match_for(model)
+            if match
+              client.emit_success t("dateprof.matched_#{match}")
+            else
+              client.emit_success t("dateprof.swiped_#{self.type}")
+            end
           end
         end
       end

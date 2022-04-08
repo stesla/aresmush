@@ -19,8 +19,8 @@ module AresMUSH
         match = enactor.match_for(char)
         swipe = enactor.swipe_for(char)
         {
-          match: match ? match.to_s.titlecase : nil,
-          swipe: swipe ? { type: swipe.type.to_s.titlecase,  missed: swipe.missed } : nil,
+          match: match ? match.to_s.humanize.titlecase : nil,
+          swipe: swipe ? { type: swipe.type.to_s.humanize.titlecase,  missed: swipe.missed } : nil,
         }
       end
     end

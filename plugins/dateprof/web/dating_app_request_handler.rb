@@ -25,7 +25,7 @@ module AresMUSH
       end
 
       def swipes
-        [:interested, :curious, :skip, :missed].map do |type|
+        [:interested, :curious, :skip, :missed_connection].map do |type|
           characters = enactor.swipes_of_type(type).map(&:target)
           format_char_list(type, characters)
         end.reject do |dict|
@@ -53,7 +53,7 @@ module AresMUSH
 
       def format_char_list(type, characters)
         {
-          name: type.to_s.titlecase,
+          name: type.to_s.humanize.titlecase,
           key: type,
           characters: characters.map {|char| format_char(char)}
         }
