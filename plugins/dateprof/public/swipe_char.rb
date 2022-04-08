@@ -5,7 +5,7 @@ module AresMUSH
 
     def missed_connections
       AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
-        self.match_for(swipe.character) == :missed
+        self.match_for(swipe.character) == :missed_connection
       end.map do |swipe|
         swipe.character
       end
@@ -26,7 +26,7 @@ module AresMUSH
     end
 
     def swipe(target, type)
-      return swipe_missed(target) if type == :missed
+      return swipe_missed(target) if type == :missed_connection
       swipe = swipe_for(target)
       if swipe.nil?
         swipe = AresMUSH::DateProf::Swipe.create(
@@ -53,7 +53,7 @@ module AresMUSH
     end
 
     def swipes_of_type(type)
-      if type == :missed
+      if type == :missed_connection
         self.swipes.find(missed: true)
       else
         self.swipes.find(type: type)
@@ -67,7 +67,7 @@ module AresMUSH
         h
       end.tap do |h|
         missed = self.missed_connections
-        h[:missed] = self.missed_connections unless missed.empty?
+        h[:missed_connection] = self.missed_connections unless missed.empty?
       end
     end
 
@@ -76,7 +76,7 @@ module AresMUSH
       them = target.swipe_for(self)
 
       if (me.nil? || me.type == :skip) && them && them.missed
-        return :missed
+        return :missed_connection
       elsif me.nil? or them.nil?
         return nil
       end

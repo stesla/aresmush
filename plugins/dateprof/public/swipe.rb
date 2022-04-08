@@ -12,7 +12,7 @@ module AresMUSH
       index :missed
 
       def self.check_type(type)
-        return nil if [:interested, :curious, :skip].include? type
+        return nil if [:interested, :curious, :skip, :missed_connection].include? type
         return t('dateprof.invalid_swipe_type')
       end
     end
