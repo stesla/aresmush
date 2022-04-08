@@ -47,7 +47,7 @@ module AresMUSH
           name: char.name,
           icon: Website.icon_for_char(char),
           profile_image: Website.get_file_info(char.profile_image),
-          dateprof: char.dateprof,
+          dateprof: Website.format_markdown_for_html(char.dateprof),
         }
       end
 
