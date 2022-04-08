@@ -4,14 +4,11 @@ module AresMUSH
       attr_accessor :enactor
 
       def handle(request)
+        self.enactor = request.enactor
         error = Website.check_login(request)
         return error if error
-
-        if request.enactor.is_admin?
-          return {error: t('dateprof.admin_no_swiping')}
-        end
-
-        self.enactor = request.enactor
+        return {error: t('dateprof.must_be_approved')} unless enactor.is_approved?
+        return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(enactor)
         {
           profile: profile,
           swipes: swipes,

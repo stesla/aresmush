@@ -2,7 +2,7 @@ module AresMUSH
   module DateProf
     class SwipeCmd
       include CommandHandler
-      include DateProf::SwipeType
+      include SwipeCommandHandler
 
       attr_accessor :name, :type
 
@@ -16,12 +16,6 @@ module AresMUSH
         else
           self.type = swipe_type_arg(cmd.args)
         end
-      end
-
-      def check_enactor
-        return t('dateprof.must_be_approved') unless enactor.is_approved?
-        return t('dateprof.admin_no_swiping') if enactor.is_admin?
-        return nil
       end
 
       def check_type
