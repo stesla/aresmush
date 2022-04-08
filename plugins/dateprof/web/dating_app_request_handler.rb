@@ -15,7 +15,6 @@ module AresMUSH
         {
           profile: profile,
           swipes: swipes,
-          missed: missed_connections,
           matches: matches,
         }
       end
@@ -29,13 +28,11 @@ module AresMUSH
         [:interested, :curious, :skip, :missed].map do |type|
           characters = enactor.swipes_of_type(type).map(&:target)
           format_char_list(type, characters)
+        end.reject do |dict|
+          dict[:characters].empty?
         end
       end
 
-      def missed_connections
-        enactor.missed_connections.map {|char| format_char(char)}
-      end
-  
       def matches
         enactor.matches.map do |type, characters|
           format_char_list(type, characters)

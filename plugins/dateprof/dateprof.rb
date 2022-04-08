@@ -28,8 +28,6 @@ module AresMUSH
                 return SwipeListCmd
               when "matches"
                 return SwipeMatchesCmd
-              when "missed"
-                return SwipeMissedCmd
               when nil
                 return SwipeCmd
               end

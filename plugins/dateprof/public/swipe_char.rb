@@ -65,6 +65,9 @@ module AresMUSH
         match = self.match_for(swipe.target)
         (h[match] ||= []) << swipe.target if match
         h
+      end.tap do |h|
+        missed = self.missed_connections
+        h[:missed] = self.missed_connections unless missed.empty?
       end
     end
 
