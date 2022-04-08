@@ -1,0 +1,63 @@
+module AresMUSH
+  module DateProf
+    class DatingAppRequestHandler
+      attr_accessor :enactor
+
+      def handle(request)
+        error = Website.check_login(request)
+        return error if error
+
+        if request.enactor.is_admin?
+          return {error: t('dateprof.admin_no_swiping')}
+        end
+
+        self.enactor = request.enactor
+        {
+          profile: profile,
+          swipes: swipes,
+          matches: matches,
+        }
+      end
+
+      def profile
+        char = enactor.next_dating_profile
+        format_char(char) unless char.nil?
+      end
+
+      def swipes
+        [:interested, :curious, :skip, :missed].map do |type|
+          characters = enactor.swipes_of_type(type).map(&:target)
+          format_char_list(type, characters)
+        end.reject do |dict|
+          dict[:characters].empty?
+        end
+      end
+
+      def matches
+        enactor.matches.map do |type, characters|
+          format_char_list(type, characters)
+        end
+      end
+
+      private
+
+      def format_char(char)
+        {
+          id: char.id,
+          name: char.name,
+          icon: Website.icon_for_char(char),
+          profile_image: Website.get_file_info(char.profile_image),
+          dateprof: char.dateprof,
+        }
+      end
+
+      def format_char_list(type, characters)
+        {
+          name: type.to_s.titlecase,
+          key: type,
+          characters: characters.map {|char| format_char(char)}
+        }
+      end
+    end
+  end
+end

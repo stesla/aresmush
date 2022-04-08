@@ -33,6 +33,15 @@
 <%= divider %>
 %xh<%= left( t('profile.handle'), 12 ) %>%xn @<%= handle_name %> - <%= handle_profile %>
 <% end %>
+<% if dating_match? or dating_swipe? %>
+<%= divider %>
+<% if dating_match? %>
+%xh<%= left( t('dateprof.dating_match'), 12) %>%xn <%= left( dating_match, 25 ) %>
+<% end %>
+<% if dating_swipe? %>
+%xh<%= left( t('dateprof.dating_swipe'), 12) %>%xn <%= left( dating_swipe, 25 ) %>
+<% end %>
+<% end %>
 <%= divider %>
 <%= t('profile.extra_profile_info') %>
 <%= footer %>

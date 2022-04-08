@@ -17,7 +17,33 @@ module AresMUSH
       def visible_demographics
         Demographics.visible_demographics(@char, @enactor).select { |d| d != 'birthdate' }
       end
-      
+
+      def dating_match?
+        @enactor.match_for(@char)
+      end
+
+      def dating_match
+        match = @enactor.match_for(@char) || :none
+        color = case match
+                when :solid then "%xh%xb"
+                when :okay then "%xh%xc"
+                when :maybe then "%xh%xg"
+                when :missed then "%xh%xy"
+                else ""
+                end
+        "#{color}#{match.to_s.titlecase}%xn"
+      end
+
+      def dating_swipe?
+        @enactor.swipe_for(@char)
+      end
+
+      def dating_swipe
+        swipe = @enactor.swipe_for(@char)
+        return "None" if swipe.nil?
+        return "#{swipe.type.to_s.titlecase}#{swipe.missed ? ' (Missed)' : ''}"
+      end
+
       def demographic(d)
         @char.demographic(d)
       end

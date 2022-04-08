@@ -22,9 +22,29 @@ module AresMUSH
                 else 
                     return DateProfCmd
                 end
+            when "swipe"
+              case cmd.switch
+              when "list"
+                return SwipeListCmd
+              when "matches"
+                return SwipeMatchesCmd
+              when nil
+                return SwipeCmd
+              end
             end
+            nil
         end
 
-        nil
+        def self.get_web_request_handler(request)
+            case request.cmd
+            when "datingApp"
+              return DatingAppRequestHandler
+            when "matchFor"
+              return MatchForRequestHandler
+            when "swipeFor"
+              return SwipeForRequestHandler
+            end
+            nil
+        end
     end
 end

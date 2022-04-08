@@ -1,0 +1,8 @@
+<%= header %>
+<%= "%xh#{title}%xn%r%r" -%>
+<% matches.each do |type, characters| %>
+<% unless characters.empty? %>
+%xh<%= type.to_s.titlecase %>:%xn <%= characters.map {|c| c.name}.join(', ') %>
+<% end %>
+<% end %>
+<%= footer %>
