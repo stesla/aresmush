@@ -13,7 +13,7 @@ module AresMUSH
     end
 
     def self.can_swipe?(actor)
-      actor && actor.is_approved? && !actor.is_admin?
+      actor && actor.is_approved? && !actor.is_admin? && !actor.is_playerbit?
     end
   end
 end
