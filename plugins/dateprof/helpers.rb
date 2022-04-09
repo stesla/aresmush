@@ -15,5 +15,13 @@ module AresMUSH
     def self.can_swipe?(actor)
       actor && actor.is_approved? && !actor.is_admin? && !actor.is_playerbit?
     end
+
+    def self.swiping_demographics
+      Global.read_config('dateprof', 'demographics') || ['gender']
+    end
+
+    def self.swiping_groups
+      Global.read_config('dateprof', 'groups') || []
+    end
   end
 end

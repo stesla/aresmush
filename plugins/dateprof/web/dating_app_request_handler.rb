@@ -18,7 +18,17 @@ module AresMUSH
 
       def profile
         char = enactor.next_dating_profile
-        format_char(char) unless char.nil?
+        return nil if char.nil?
+        format_char(char).tap do |dict|
+          facts = []
+          DateProf.swiping_demographics.each do |key|
+            facts << {name: key.titlecase, value: char.demographics[key]}
+          end
+          DateProf.swiping_groups.each do |key|
+            facts << {name: key.titlecase, value: char.groups[key]}
+          end
+          dict[:facts] = facts
+        end
       end
 
       def swipes
