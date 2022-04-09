@@ -4,14 +4,11 @@ module AresMUSH
       attr_accessor :enactor
 
       def handle(request)
+        self.enactor = request.enactor
         error = Website.check_login(request)
         return error if error
-
-        if request.enactor.is_admin?
-          return {error: t('dateprof.admin_no_swiping')}
-        end
-
-        self.enactor = request.enactor
+        return {error: t('dateprof.must_be_approved')} unless enactor.is_approved?
+        return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(enactor)
         {
           profile: profile,
           swipes: swipes,
@@ -21,7 +18,17 @@ module AresMUSH
 
       def profile
         char = enactor.next_dating_profile
-        format_char(char) unless char.nil?
+        return nil if char.nil?
+        format_char(char).tap do |dict|
+          facts = []
+          DateProf.swiping_demographics.each do |key|
+            facts << {name: key.titlecase, value: char.demographics[key]}
+          end
+          DateProf.swiping_groups.each do |key|
+            facts << {name: key.titlecase, value: char.groups[key]}
+          end
+          dict[:facts] = facts
+        end
       end
 
       def swipes
@@ -34,9 +41,11 @@ module AresMUSH
       end
 
       def matches
-        enactor.matches.map do |type, characters|
-          format_char_list(type, characters)
-        end
+        m = enactor.matches
+        [:solid, :okay, :maybe, :missed_connection].map do |type|
+          next unless m[type]
+          format_char_list(type, m[type])
+        end.compact
       end
 
       private

@@ -2,11 +2,7 @@ module AresMUSH
   module DateProf
     class SwipeMatchesCmd
       include CommandHandler
-
-      def check_admin
-        return t('dateprof.admin_no_swiping') if enactor.is_admin?
-        return nil
-      end
+      include SwipeCommandHandler
 
       def handle
         title = "#{enactor_name}'s Matches"

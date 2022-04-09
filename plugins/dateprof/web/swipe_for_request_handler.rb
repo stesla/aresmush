@@ -11,11 +11,14 @@ module AresMUSH
         error = Website.check_login(request, true)
         return error if error
 
+        enactor = request.enactor
+        return {error: t('dateprof.must_be_approved')} unless enactor.is_approved?
+        return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(enactor)
+
         type = request.args[:type].to_sym
         error = Swipe.check_type(type)
         return { error: error } if error
 
-        enactor = request.enactor
         error = enactor.swipe(char, type)
         return { error: error } if error
         match = enactor.match_for(char)

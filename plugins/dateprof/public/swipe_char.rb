@@ -17,10 +17,8 @@ module AresMUSH
     end
 
     def refresh_dating_queue!
-      queue = Character.all.reject(&:is_admin?).select(&:is_approved?).reject do |model|
-        model.id == self.id
-      end.select do |model|
-        swipe_for(model).nil?
+      queue = Character.all.select do |model|
+        model.id != self.id && DateProf.can_swipe?(model) && swipe_for(model).nil?
       end.shuffle
       self.dating_queue.replace(queue)
     end

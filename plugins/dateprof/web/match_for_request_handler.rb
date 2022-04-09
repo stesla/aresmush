@@ -11,10 +11,7 @@ module AresMUSH
 
         error = Website.check_login(request, true)
         return error if error
-
-        if (enactor.is_admin?)
-          return {}
-        end
+        return {} unless DateProf.can_swipe?(enactor)
 
         match = enactor.match_for(char)
         swipe = enactor.swipe_for(char)
