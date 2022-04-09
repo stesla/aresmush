@@ -31,9 +31,11 @@ module AresMUSH
       end
 
       def matches
-        enactor.matches.map do |type, characters|
-          format_char_list(type, characters)
-        end
+        m = enactor.matches
+        [:solid, :okay, :maybe, :missed_connection].map do |type|
+          next unless m[type]
+          format_char_list(type, m[type])
+        end.compact
       end
 
       private
