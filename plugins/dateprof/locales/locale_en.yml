@@ -20,3 +20,6 @@ en:
     swiped_skip: "Skipped!"
     missed_on: "Marked as a missed connection."
     missed_off: "No longer marked as a missed connection."
+    invalid_alts_option: "That is not a valid alts option. Try one of these: %{options}"
+    alt_matches_hidden: "Your alt matches will be hidden."
+    alt_matches_shown: "Your alt matches will be shown."

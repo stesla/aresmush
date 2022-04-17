@@ -13,6 +13,7 @@ module AresMUSH
           profile: profile,
           swipes: swipes,
           matches: matches,
+          hide_alt_matches: enactor.hide_alt_matches
         }
       end
 

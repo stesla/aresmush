@@ -2,14 +2,14 @@ module AresMUSH
   module DateProf
     class SwipeForRequestHandler
       def handle(request)
+        error = Website.check_login(request, true)
+        return error if error
+
         char = Character.find_one_by_name request.args[:target]
 
         if (!char)
           return { error: t('webportal.not_found') }
         end
-
-        error = Website.check_login(request, true)
-        return error if error
 
         enactor = request.enactor
         return {error: t('dateprof.must_be_approved')} unless enactor.is_approved?

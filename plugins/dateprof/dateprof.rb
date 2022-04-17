@@ -24,6 +24,8 @@ module AresMUSH
                 end
             when "swipe"
               case cmd.switch
+              when "alts"
+                return SwipeAltsCmd
               when "list"
                 return SwipeListCmd
               when "matches"
@@ -39,6 +41,8 @@ module AresMUSH
             case request.cmd
             when "datingApp"
               return DatingAppRequestHandler
+            when "altMatches"
+              return AltMatchesRequestHandler
             when "matchFor"
               return MatchForRequestHandler
             when "swipeFor"

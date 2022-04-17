@@ -2,6 +2,12 @@ module AresMUSH
   class Character
     list :dating_queue, 'AresMUSH::Character'
     collection :swipes, 'AresMUSH::DateProf::Swipe'
+    attribute :hide_alt_matches, :type=> DataType::Boolean, :default => false
+
+    def hide_alt_matches!(val)
+      self.update(hide_alt_matches: val)
+      self.hide_alt_matches ? t('dateprof.alt_matches_hidden') : t('dateprof.alt_matches_shown')
+    end
 
     def missed_connections
       AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
@@ -59,7 +65,9 @@ module AresMUSH
     end
 
     def matches
-      self.swipes.inject({}) do |h, swipe|
+      self.swipes.reject do |swipe|
+        self.hide_alt_matches and self.alts.include?(swipe.target)
+      end.inject({}) do |h, swipe|
         match = self.match_for(swipe.target)
         (h[match] ||= []) << swipe.target if match
         h
