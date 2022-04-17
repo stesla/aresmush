@@ -56,19 +56,11 @@ module AresMUSH
 
       def swipe_target
         ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
-          error = enactor.swipe(model, self.type)
-          if error
-            client.emit_failure error
-          elsif self.type == :missed_connection
-            swipe = enactor.swipe_for(model)
-            client.emit_success(swipe.missed ? t('dateprof.missed_on') : t('dateprof.missed_off'))
-          else
-            match = enactor.match_for(model)
-            if match
-              client.emit_success t("dateprof.matched_#{match}")
-            else
-              client.emit_success t("dateprof.swiped_#{self.type}")
-            end
+          begin
+            message = enactor.swipe(model, self.type)
+            client.emit_success message
+          rescue SwipeError => e
+            client.emit_failure e.message
           end
         end
       end

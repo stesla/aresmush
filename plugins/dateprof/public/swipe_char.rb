@@ -49,7 +49,9 @@ module AresMUSH
       if swipe && swipe.missed && type != :skip
         swipe.update(missed: false)
       end
-      return nil
+
+      match = match_for(target)
+      match ? t("dateprof.matched_#{match}") : t("dateprof.swiped_#{type}")
     end
 
     def swipe_for(target)
@@ -100,12 +102,12 @@ module AresMUSH
       our_swipe = self.swipe_for(model)
       their_swipe = model.swipe_for(self)
       if !our_swipe || our_swipe.type == :skip
-        return t('dateprof.missed_must_swipe')
+        raise DateProf::SwipeError, t('dateprof.missed_must_swipe')
       elsif their_swipe && their_swipe.type != :skip
-        return t('dateprof.already_matched')
+        raise DateProf::SwipeError, t('dateprof.already_matched')
       end
       our_swipe.update(missed: !our_swipe.missed)
-      return nil
+      our_swipe.missed ? t('dateprof.missed_on') : t('dateprof.missed_off')
     end
   end
 end

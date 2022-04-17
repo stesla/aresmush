@@ -12,6 +12,12 @@ module AresMUSH
       end
     end
 
+    class Error < ::StandardError
+    end
+
+    class SwipeError < Error
+    end
+
     def self.can_swipe?(actor)
       actor && actor.is_approved? && !actor.is_admin? && !actor.is_playerbit?
     end

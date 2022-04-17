@@ -19,10 +19,11 @@ module AresMUSH
         error = Swipe.check_type(type)
         return { error: error } if error
 
-        error = enactor.swipe(char, type)
-        return { error: error } if error
-        match = enactor.match_for(char)
-        { match: match ? match.to_s.humanize.titlecase : nil }
+        begin
+          {message: enactor.swipe(char, type)}
+        rescue SwipeError => e
+          {error: e.message}
+        end
       end
     end
   end
