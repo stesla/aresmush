@@ -41,8 +41,8 @@ module AresMUSH
             case request.cmd
             when "datingApp"
               return DatingAppRequestHandler
-            when "altMatches"
-              return AltMatchesRequestHandler
+            when "showOrHideAltMatches"
+              return ShowOrHideAltMatchesRequestHandler
             when "matchFor"
               return MatchForRequestHandler
             when "swipeFor"
