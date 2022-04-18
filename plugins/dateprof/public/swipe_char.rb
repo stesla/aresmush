@@ -2,17 +2,17 @@ module AresMUSH
   class Character
     list :dating_queue, 'AresMUSH::Character'
     collection :swipes, 'AresMUSH::DateProf::Swipe'
-    attribute :hide_alt_matches, :type=> DataType::Boolean, :default => false
+    attribute :hide_alts, :type=> DataType::Boolean, :default => false
 
-    def hide_alt_matches!(val, all=false)
+    def hide_alts!(val, all=false)
       if all
         self.alts.select {|alt| DateProf.can_swipe?(alt)}.map do |alt|
-          alt.hide_alt_matches!(val)
+          alt.hide_alts!(val)
         end.last
       else
-        self.update(hide_alt_matches: val)
+        self.update(hide_alts: val)
         refresh_dating_queue!
-        self.hide_alt_matches ? t('dateprof.alt_matches_hidden') : t('dateprof.alt_matches_shown')
+        self.hide_alts ? t('dateprof.alt_matches_hidden') : t('dateprof.alt_matches_shown')
       end
     end
 
@@ -33,7 +33,7 @@ module AresMUSH
       queue = Character.all.select do |model|
         next if model.id == self.id
         next unless DateProf.can_swipe?(model)
-        next if hide_alt_matches and self.alts.include?(model)
+        next if hide_alts and self.alts.include?(model)
         swipe_for(model).nil?
       end.shuffle
       self.dating_queue.replace(queue)
@@ -78,7 +78,7 @@ module AresMUSH
 
     def matches
       self.swipes.reject do |swipe|
-        self.hide_alt_matches and self.alts.include?(swipe.target)
+        self.hide_alts and self.alts.include?(swipe.target)
       end.inject({}) do |h, swipe|
         match = self.match_for(swipe.target)
         (h[match] ||= []) << swipe.target if match

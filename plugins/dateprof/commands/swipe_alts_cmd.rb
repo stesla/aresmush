@@ -56,7 +56,7 @@ module AresMUSH
       private
 
       def handle_for_char(char)
-        char.hide_alt_matches!(self.option == :hide, self.flag == :all)
+        char.hide_alts!(self.option == :hide, self.flag == :all)
       end
     end
   end
