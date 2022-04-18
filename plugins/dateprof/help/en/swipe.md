@@ -1,6 +1,6 @@
 ---
 toc: Community
-summary: Swiping in the Dating App.
+summary: Swiping in The App.
 ---
 
 # Swiping
@@ -11,7 +11,6 @@ These commands allow you to interact with the Dating App.
 `swipe <name>=<type>` - Swipe on the named character.
 `swipe/list <type>` - Display your swipes.
 `swipe/matches` - Display your matches and missed connections.
-`swipe/alts <hide, show>` - Indicate if you want to hide or show your own alts in your matches.
 
 The valid types are: `interested`, `curious`, `skip`, and `missed connection`.
 
@@ -23,3 +22,9 @@ If you have swiped either `interested` or `curious` on somebody and do not have
 a match, but think it would be an interesting connection. You can swipe `missed
 connection` to indicate that. You will show up as a `missed connection` match
 for that person.
+
+By default, you will see your own alts in The App. You can swipe on them and
+they can match. These commands allow you to hide your alts in The App.
+
+`swipe/alts <hide, show>[/all]` - Set it for yourself, optionally for all of your alts at once.
+`swipe/alts <name>=<hide, show>` - Set it for a character that is one of your alts, or for any character if you are an admin with the `manage_apps` permission.

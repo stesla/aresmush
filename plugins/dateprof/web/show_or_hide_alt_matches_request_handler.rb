@@ -15,9 +15,7 @@ module AresMUSH
         end
 
         message = if request.args[:alts] then
-          enactor.alts.select {|alt| DateProf.can_swipe?(alt)}.map do |alt|
-            alt.hide_alt_matches!(option == :hide)
-          end.last
+          enactor.hide_alt_matches!(option == :hide, true)
         else
           return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(enactor)
           enactor.hide_alt_matches!(option == :hide)

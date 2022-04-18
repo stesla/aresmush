@@ -4,9 +4,15 @@ module AresMUSH
     collection :swipes, 'AresMUSH::DateProf::Swipe'
     attribute :hide_alt_matches, :type=> DataType::Boolean, :default => false
 
-    def hide_alt_matches!(val)
-      self.update(hide_alt_matches: val)
-      self.hide_alt_matches ? t('dateprof.alt_matches_hidden') : t('dateprof.alt_matches_shown')
+    def hide_alt_matches!(val, all=false)
+      if all
+        self.alts.select {|alt| DateProf.can_swipe?(alt)}.map do |alt|
+          alt.hide_alt_matches!(val)
+        end.last
+      else
+        self.update(hide_alt_matches: val)
+        self.hide_alt_matches ? t('dateprof.alt_matches_hidden') : t('dateprof.alt_matches_shown')
+      end
     end
 
     def missed_connections

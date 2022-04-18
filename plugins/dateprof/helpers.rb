@@ -8,7 +8,7 @@ module AresMUSH
       end
 
       def swipe_type_arg(arg)
-        downcase_arg(arg).sub(' ','_').to_sym
+        arg ? downcase_arg(arg).sub(' ','_').to_sym : nil
       end
     end
 
