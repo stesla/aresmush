@@ -11,6 +11,7 @@ module AresMUSH
         end.last
       else
         self.update(hide_alt_matches: val)
+        refresh_dating_queue!
         self.hide_alt_matches ? t('dateprof.alt_matches_hidden') : t('dateprof.alt_matches_shown')
       end
     end
@@ -30,7 +31,10 @@ module AresMUSH
 
     def refresh_dating_queue!
       queue = Character.all.select do |model|
-        model.id != self.id && DateProf.can_swipe?(model) && swipe_for(model).nil?
+        next if model.id == self.id
+        next unless DateProf.can_swipe?(model)
+        next if hide_alt_matches and self.alts.include?(model)
+        swipe_for(model).nil?
       end.shuffle
       self.dating_queue.replace(queue)
     end
