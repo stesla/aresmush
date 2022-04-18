@@ -7,7 +7,6 @@ module AresMUSH
 
         enactor = request.enactor
         return {error: t('dateprof.must_be_approved')} unless enactor.is_approved?
-        return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(enactor)
 
         option = request.args[:option] && request.args[:option].to_sym
         options = [ :hide, :show ]
@@ -15,7 +14,15 @@ module AresMUSH
           return {error: t('dateprof.invalid_alts_option', options: options.map(&:to_s).join(', '))}
         end
 
-        message = enactor.hide_alt_matches!(option == :hide)
+        message = if request.args[:alts] then
+          enactor.alts.select {|alt| DateProf.can_swipe?(alt)}.map do |alt|
+            alt.hide_alt_matches!(option == :hide)
+          end.last
+        else
+          return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(enactor)
+          enactor.hide_alt_matches!(option == :hide)
+        end
+
         { message: message }
       end
     end
