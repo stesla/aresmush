@@ -8,8 +8,14 @@ module AresMUSH
       end
 
       def swipe_type_arg(arg)
-        downcase_arg(arg).sub(' ','_').to_sym
+        arg ? downcase_arg(arg).sub(' ','_').to_sym : nil
       end
+    end
+
+    class Error < ::StandardError
+    end
+
+    class SwipeError < Error
     end
 
     def self.can_swipe?(actor)
@@ -22,6 +28,31 @@ module AresMUSH
 
     def self.swiping_groups
       Global.read_config('dateprof', 'groups') || []
+    end
+
+    def self.format_char(char)
+      {
+        id: char.id,
+        name: char.name,
+        icon: Website.icon_for_char(char),
+        profile_image: Website.get_file_info(char.profile_image),
+        dateprof: Website.format_markdown_for_html(char.dateprof),
+      }
+    end
+
+    def self.format_char_list(type, characters)
+      {
+        name: type.to_s.humanize.titlecase,
+        key: type,
+        characters: characters.map {|char| format_char(char)}
+      }
+    end
+
+    def self.format_matches(matches)
+      [:solid, :okay, :maybe, :missed_connection].map do |type|
+        next unless matches[type]
+        DateProf.format_char_list(type, matches[type])
+      end.compact
     end
   end
 end

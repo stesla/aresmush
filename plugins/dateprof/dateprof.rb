@@ -24,6 +24,8 @@ module AresMUSH
                 end
             when "swipe"
               case cmd.switch
+              when "alts"
+                return SwipeAltsCmd
               when "list"
                 return SwipeListCmd
               when "matches"
@@ -37,10 +39,14 @@ module AresMUSH
 
         def self.get_web_request_handler(request)
             case request.cmd
+            when "altMatches"
+              return AltMatchesRequestHandler
             when "datingApp"
               return DatingAppRequestHandler
             when "matchFor"
               return MatchForRequestHandler
+            when "showOrHideAlts"
+              return ShowOrHideAltsRequestHandler
             when "swipeFor"
               return SwipeForRequestHandler
             end

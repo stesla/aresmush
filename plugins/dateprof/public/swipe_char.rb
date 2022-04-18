@@ -2,6 +2,19 @@ module AresMUSH
   class Character
     list :dating_queue, 'AresMUSH::Character'
     collection :swipes, 'AresMUSH::DateProf::Swipe'
+    attribute :hide_alts, :type=> DataType::Boolean, :default => false
+
+    def hide_alts!(val, all=false)
+      if all
+        self.alts.select {|alt| DateProf.can_swipe?(alt)}.map do |alt|
+          alt.hide_alts!(val)
+        end.last
+      else
+        self.update(hide_alts: val)
+        refresh_dating_queue!
+        self.hide_alts ? t('dateprof.alt_matches_hidden') : t('dateprof.alt_matches_shown')
+      end
+    end
 
     def missed_connections
       AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
@@ -18,7 +31,10 @@ module AresMUSH
 
     def refresh_dating_queue!
       queue = Character.all.select do |model|
-        model.id != self.id && DateProf.can_swipe?(model) && swipe_for(model).nil?
+        next if model.id == self.id
+        next unless DateProf.can_swipe?(model)
+        next if hide_alts and self.alts.include?(model)
+        swipe_for(model).nil?
       end.shuffle
       self.dating_queue.replace(queue)
     end
@@ -43,7 +59,9 @@ module AresMUSH
       if swipe && swipe.missed && type != :skip
         swipe.update(missed: false)
       end
-      return nil
+
+      match = match_for(target)
+      match ? t("dateprof.matched_#{match}") : t("dateprof.swiped_#{type}")
     end
 
     def swipe_for(target)
@@ -59,7 +77,9 @@ module AresMUSH
     end
 
     def matches
-      self.swipes.inject({}) do |h, swipe|
+      self.swipes.reject do |swipe|
+        self.hide_alts and self.alts.include?(swipe.target)
+      end.inject({}) do |h, swipe|
         match = self.match_for(swipe.target)
         (h[match] ||= []) << swipe.target if match
         h
@@ -92,12 +112,12 @@ module AresMUSH
       our_swipe = self.swipe_for(model)
       their_swipe = model.swipe_for(self)
       if !our_swipe || our_swipe.type == :skip
-        return t('dateprof.missed_must_swipe')
+        raise DateProf::SwipeError, t('dateprof.missed_must_swipe')
       elsif their_swipe && their_swipe.type != :skip
-        return t('dateprof.already_matched')
+        raise DateProf::SwipeError, t('dateprof.already_matched')
       end
       our_swipe.update(missed: !our_swipe.missed)
-      return nil
+      our_swipe.missed ? t('dateprof.missed_on') : t('dateprof.missed_off')
     end
   end
 end
