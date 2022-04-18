@@ -45,8 +45,8 @@ module AresMUSH
               return DatingAppRequestHandler
             when "matchFor"
               return MatchForRequestHandler
-            when "showOrHideAltMatches"
-              return ShowOrHideAltMatchesRequestHandler
+            when "showOrHideAlts"
+              return ShowOrHideAltsRequestHandler
             when "swipeFor"
               return SwipeForRequestHandler
             end

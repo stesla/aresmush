@@ -1,6 +1,6 @@
 module AresMUSH
   module DateProf
-    class ShowOrHideAltMatchesRequestHandler
+    class ShowOrHideAltsRequestHandler
       def handle(request)
         error = Website.check_login(request, true)
         return error if error
