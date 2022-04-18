@@ -39,12 +39,14 @@ module AresMUSH
 
         def self.get_web_request_handler(request)
             case request.cmd
+            when "altMatches"
+              return AltMatchesRequestHandler
             when "datingApp"
               return DatingAppRequestHandler
-            when "showOrHideAltMatches"
-              return ShowOrHideAltMatchesRequestHandler
             when "matchFor"
               return MatchForRequestHandler
+            when "showOrHideAltMatches"
+              return ShowOrHideAltMatchesRequestHandler
             when "swipeFor"
               return SwipeForRequestHandler
             end
