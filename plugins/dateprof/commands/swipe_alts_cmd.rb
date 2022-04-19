@@ -24,7 +24,7 @@ module AresMUSH
 
       def check_enactor
         return nil if target and Chargen.can_approve?(enactor)
-        return t('dispatcher.not_allowed') if target and !enactor.alts.map(&:name).include?(target)
+        return t('dispatcher.not_allowed') if target and !AresCentral.is_alt?(enactor, Character.find_one_by_name(target))
         super
       end
 
