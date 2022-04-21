@@ -22,6 +22,12 @@ module AresMUSH
       actor && actor.is_approved? && !actor.is_admin? && !actor.is_playerbit?
     end
 
+    def self.show_dating_profile?(char, viewer)
+      return true if char.name == viewer.name
+      return true if Chargen.can_approve?(viewer)
+      can_swipe?(char)
+    end
+
     def self.swiping_demographics
       Global.read_config('dateprof', 'demographics') || ['gender']
     end

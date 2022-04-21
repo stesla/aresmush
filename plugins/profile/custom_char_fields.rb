@@ -8,7 +8,7 @@ module AresMUSH
       def self.get_fields_for_viewing(char, viewer)
         return {
           dateprof: Website.format_markdown_for_html(char.dateprof),
-          canSwipe: DateProf::can_swipe?(char),
+          showDatingProfile: DateProf::show_dating_profile?(char, viewer),
         }
       end
     
