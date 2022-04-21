@@ -15,6 +15,7 @@ module AresMUSH
         end.map do |alt|
           {
             char: DateProf.format_char(alt),
+            hasUnswipedCharacters: !!alt.next_dating_profile,
             matches: DateProf.format_matches(alt.matches),
           }
         end
