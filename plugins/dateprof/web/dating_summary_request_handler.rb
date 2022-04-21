@@ -1,6 +1,6 @@
 module AresMUSH
   module DateProf
-    class AltMatchesRequestHandler
+    class DatingSummaryRequestHandler
       def handle(request)
         error = Website.check_login(request, true)
         return error if error
@@ -15,6 +15,7 @@ module AresMUSH
         end.map do |alt|
           {
             char: DateProf.format_char(alt),
+            hasUnswipedCharacters: !!alt.next_dating_profile,
             matches: DateProf.format_matches(alt.matches),
           }
         end
