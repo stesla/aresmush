@@ -50,7 +50,7 @@ module AresMUSH
       {
         name: type.to_s.humanize.titlecase,
         key: type,
-        characters: characters.map {|char| format_char(char)}
+        characters: characters.sort {|a,b| a.name <=> b.name}.map {|char| format_char(char)}
       }
     end
 
