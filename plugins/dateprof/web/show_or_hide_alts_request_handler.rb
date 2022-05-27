@@ -2,11 +2,13 @@ module AresMUSH
   module DateProf
     class ShowOrHideAltsRequestHandler
       def handle(request)
-        error = Website.check_login(request, true)
+        error = Website.check_login(request)
         return error if error
 
         enactor = request.enactor
-        return {error: t('dateprof.must_be_approved')} unless enactor.is_approved?
+        dater = enactor.swiping_with || enactor
+
+        return {error: t('dateprof.must_be_approved')} unless dater.is_approved?
 
         option = request.args[:option] && request.args[:option].to_sym
         options = [ :hide, :show ]
@@ -15,10 +17,10 @@ module AresMUSH
         end
 
         message = if request.args[:alts] then
-          enactor.hide_alts!(option == :hide, true)
+          dater.hide_alts!(option == :hide, true)
         else
-          return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(enactor)
-          enactor.hide_alts!(option == :hide)
+          return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(dater)
+          dater.hide_alts!(option == :hide)
         end
 
         { message: message }
