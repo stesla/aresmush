@@ -25,7 +25,7 @@ module AresMUSH
           swipes: swipes(dater),
           matches: matches(dater),
           hide_alts: dater.hide_alts,
-          dater: DateProf.format_char(dater),
+          swiping_with: DateProf.format_char(dater),
           dating_alts: dater.dating_alts.map {|c| DateProf.format_char(c)},
         }
       end
