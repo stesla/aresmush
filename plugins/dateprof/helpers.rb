@@ -23,6 +23,7 @@ module AresMUSH
     end
 
     def self.show_dating_profile?(char, viewer)
+      return false unless char && viewer
       return true if char.name == viewer.name
       return true if Chargen.can_approve?(viewer)
       can_swipe?(char)
