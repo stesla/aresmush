@@ -6,7 +6,7 @@ module AresMUSH
     reference :swiping_with, 'AresMUSH::Character'
 
     def dating_alts
-      self.alts.select {|alt| DateProf.can_swipe?(alt)}
+      self.alts.select {|alt| DateProf.can_swipe?(alt)}.sort {|a,b| a.name <=> b.name}
     end
 
     def hide_alts!(val, all=false)
