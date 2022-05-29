@@ -24,3 +24,4 @@ en:
     invalid_alts_option: "That is not a valid alts option. Try one of these: %{options}"
     alt_matches_hidden: "Alt matches will be hidden."
     alt_matches_shown: "Alt matches will be shown."
+    not_your_alt: "That is not your alt."

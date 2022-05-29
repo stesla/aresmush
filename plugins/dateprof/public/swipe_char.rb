@@ -3,10 +3,15 @@ module AresMUSH
     list :dating_queue, 'AresMUSH::Character'
     collection :swipes, 'AresMUSH::DateProf::Swipe'
     attribute :hide_alts, :type=> DataType::Boolean, :default => false
+    reference :swiping_with, 'AresMUSH::Character'
+
+    def dating_alts
+      self.alts.select {|alt| DateProf.can_swipe?(alt)}.sort {|a,b| a.name <=> b.name}
+    end
 
     def hide_alts!(val, all=false)
       if all
-        self.alts.select {|alt| DateProf.can_swipe?(alt)}.map do |alt|
+        dating_alts.map do |alt|
           alt.hide_alts!(val)
         end.last
       else
@@ -66,6 +71,10 @@ module AresMUSH
 
     def swipe_for(target)
       self.swipes.find(target_id: target.id).first
+    end
+
+    def swipe_with!(char)
+      self.update(swiping_with: char)
     end
 
     def swipes_of_type(type)

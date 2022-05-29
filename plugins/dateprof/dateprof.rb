@@ -49,6 +49,8 @@ module AresMUSH
               return ShowOrHideAltsRequestHandler
             when "swipeFor"
               return SwipeForRequestHandler
+            when "swipeWith"
+              return SwipeWithRequestHandler
             end
             nil
         end
