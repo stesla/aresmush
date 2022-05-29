@@ -3,17 +3,18 @@ module AresMUSH
     class DatingAppRequestHandler
       def handle(request)
         enactor = request.enactor
-        dater = enactor.swiping_with || enactor
+        dater = enactor.swiping_with
+
+        if dater.nil?
+          dating_alts = enactor.dating_alts
+          dater = dating_alts.empty? ? enactor : dating_alts.first
+          enactor.update(swiping_with: dater)
+        end
 
         error = Website.check_login(request)
         return error if error
 
         return {error: t('dateprof.must_be_approved')} unless dater.is_approved?
-
-        unless DateProf.can_swipe?(dater)
-          dating_alts = dater.dating_alts
-          dater = dating_alts.empty? ? dater : dating_alts.first
-        end
         return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(dater)
 
         build_dating_app_web_data(dater)
