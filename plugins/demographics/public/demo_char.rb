@@ -40,7 +40,7 @@ module AresMUSH
     end
 
     def birthday
-      @birthdate ||= Date.new(0, self.birthdate.month, self.birthdate.day)
+      @birthday ||= Date.new(0, self.birthdate.month, self.birthdate.day)
     end
   end
   
