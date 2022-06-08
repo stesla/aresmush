@@ -18,6 +18,7 @@ module AresMUSH
       def check_type
         types = Demographics.census_types
         return nil if !self.name
+        return nil if self.name == 'Birthday' || self.name == 'Birthdays'
         return t('demographics.invalid_census_type', :types => types.join(',')) if !types.include?(self.name)
         return nil
       end
@@ -31,6 +32,13 @@ module AresMUSH
         end
         if (!self.name)
           template = CompleteCensusTemplate.new(paginator)
+        elsif (self.name == "Birthday" || self.name == "Birthdays")
+          paginator = Paginator.paginate(chars.select(&:birthdate).sort_by(&:birthday), self.page, 20)
+          if (paginator.out_of_bounds?)
+            client.emit_failure paginator.out_of_bounds_msg
+            return
+          end
+          template = BirthdayCensusTemplate.new(paginator)
         elsif (self.name == "Timezone" || self.name == "Timezones")
           template = TimezoneCensusTemplate.new
         elsif (self.name == "Genders" || self.name == "Gender")

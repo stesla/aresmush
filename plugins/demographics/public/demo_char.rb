@@ -38,6 +38,10 @@ module AresMUSH
     def nick
       Demographics.name_and_nickname(self)
     end
+
+    def birthday
+      @birthday ||= Date.new(0, self.birthdate.month, self.birthdate.day)
+    end
   end
   
 end

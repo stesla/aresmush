@@ -68,6 +68,8 @@ module AresMUSH
       case request.cmd
       when "actors"
         return ActorsRequestHandler
+      when "censusBirthday"
+        return BirthdayCensusRequestHandler
       when "censusFull"
         return FullCensusRequestHandler
       when "censusGroup"
