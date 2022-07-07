@@ -4,6 +4,9 @@ module AresMUSH
             include CommandHandler
 
             attr_accessor :name
+
+            tot_word_count = 0
+            tot_scene_count = 0
       
             def parse_args
               self.name = enactor_name
@@ -24,9 +27,6 @@ module AresMUSH
               msg = "#{model.ooc_name}'s word count statistics:\n"
               client.emit_success msg
 
-              tot_word_count = 0
-              tot_scene_count = 0
-    
               end
 
               alts.each {
