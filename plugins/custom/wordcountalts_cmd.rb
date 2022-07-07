@@ -15,7 +15,11 @@ module AresMUSH
             
             def handle
 
-              msg = "You did a thing. Look at you go!"
+              alts = AresCentral.play_screen_alts(enactor)
+              alt_names = alts.select { |a| a.name }
+
+              fmt_msg = "You did a thing!", "\nAlts:", alt_names
+              msg = fmt_msg.join(" ")
               client.emit_success msg
 
             end
