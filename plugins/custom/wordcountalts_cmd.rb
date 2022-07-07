@@ -15,7 +15,7 @@ module AresMUSH
             
             def handle
 
-              alts = AresCentral.play_screen_alts(self.name)
+              alts = AresCentral.play_screen_alts(self)
               alt_names = alts.select { |a| }
 
               fmt_msg = "You did a thing!", "\nAlts:", alt_names
