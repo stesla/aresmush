@@ -27,7 +27,11 @@ module AresMUSH
               end
 
               alts.each {
-                |n| client.emit "Current alt is: #{n}"
+                |n| 
+                current_alt = #{n}
+                ClassTargetFinder.with_a_charcter(current_alt, client, enactor) do |model|
+                  client.emit "Current alt is: #{n} - #{model.name}"
+                end
               }
 
             end
