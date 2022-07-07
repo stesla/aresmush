@@ -22,6 +22,8 @@ module AresMUSH
               msg = fmt_msg.join(" ")
               client.emit_success msg
 
+              end
+
             end
         end
     end
