@@ -4,6 +4,9 @@ module AresMUSH
             include CommandHandler
 
             attr_accessor :name
+
+            $alt_tot_word_count = Array.new()
+            $alt_tot_scene_count = Array.new()
   
             def parse_args
               self.name = enactor_name
@@ -33,8 +36,8 @@ module AresMUSH
                   word_count = model.pose_word_count
                   scene_count = model.scenes_participated_in.size
 
-                  tot_word_count << word_count
-                  tot_scene_count << scene_count
+                  $alt_tot_word_count << word_count
+                  $alt_tot_scene_count << scene_count
 
                   if scene_count <1
                     msg = "#{model.name} does not have any saved scenes."
@@ -50,7 +53,7 @@ module AresMUSH
                   end
                 end
 
-                msg = "\nTotal:", tot_word_count.sum, "words in", tot_scene_count.sum, "scenes."
+                msg = "\nTotal:", $alt_tot_word_count.sum, "words in", $alt_tot_scene_count.sum, "scenes."
                 client.emit msg
 
               }
