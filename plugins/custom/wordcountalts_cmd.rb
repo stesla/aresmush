@@ -29,7 +29,7 @@ module AresMUSH
 
               end
 
-              alts.each {
+              alts.sort.each {
                 |n| 
                 current_alt = "#{n}"
                 ClassTargetFinder.with_a_character(current_alt, client, enactor) do |model|
@@ -52,11 +52,13 @@ module AresMUSH
                     client.emit msg
                   end
                 end
-
-                msg = "\nTotal:", $alt_tot_word_count.sum, "words in", $alt_tot_scene_count.sum, "scenes."
-                client.emit msg
-
               }
+
+              alt_total_words = $alt_tot_word_count.sum
+              alt_total_scenes = $alt_tot_scene_count.sum
+
+              msg = "\nTotal:", alt_total_words, "words in", alt_total_scenes, "scenes."
+              client.emit msg
 
             end
         end
