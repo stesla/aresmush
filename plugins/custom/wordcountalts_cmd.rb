@@ -10,8 +10,7 @@ module AresMUSH
             end
       
             def alts
-              alt_list = AresCentral.alts(enactor).select { |c| }.map { |c| c.name }
-              alt_list.join(" ")
+              alt_list = AresCentral.alts(enactor).map { |c| c.name }
             end
 
             def format_number(number)
