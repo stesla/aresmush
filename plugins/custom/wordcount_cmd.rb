@@ -7,7 +7,6 @@ module AresMUSH
       
             def parse_args
               self.name = cmd.args || enactor_name
-              alts = AresCentral.play_screen_alts(enactor)
             end
 
             def format_number(number)
@@ -16,6 +15,7 @@ module AresMUSH
             
             def handle
                 ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
+                  alts = AresCentral.play_screen_alts(model)
                   word_count = model.pose_word_count
                   scene_count = model.scenes_participated_in.size
                   words_per_scene = word_count / scene_count
