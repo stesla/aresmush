@@ -20,12 +20,15 @@ module AresMUSH
             def handle
 
               ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
-
-              fmt_msg = "#{model.ooc_name}'s word count statistics:", alts
-              msg = fmt_msg.join(" ")
+              
+              msg = "#{model.ooc_name}'s word count statistics:"
               client.emit_success msg
-
+    
               end
+
+              alts.each {
+                |n| client.emit "Current alt is: #{n}"
+              }
 
             end
         end
