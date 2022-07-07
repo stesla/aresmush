@@ -7,6 +7,7 @@ module AresMUSH
       
             def parse_args
               self.name = cmd.args || enactor_name
+              alts = AresCentral.play_screen_alts(enactor)
             end
 
             def format_number(number)
@@ -21,7 +22,7 @@ module AresMUSH
                   word_count = format_number(word_count)
                   scene_count = format_number(scene_count)
                   words_per_scene = format_number(words_per_scene)
-                  total_count = "#{model.name} has written", word_count, "words in", scene_count, "scenes for an average of", words_per_scene, "per scene.", "(#{model.handle_id} handle ID.)"
+                  total_count = "#{model.name} has written", word_count, "words in", scene_count, "scenes for an average of", words_per_scene, "per scene.\n", alts
                   msg = total_count.join(" ")
                   client.emit_success msg
                 end
