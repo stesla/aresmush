@@ -5,8 +5,8 @@ module AresMUSH
 
             attr_accessor :name
 
-            tot_word_count = 0
-            tot_scene_count = 0
+            @tot_word_count = 0
+            @tot_scene_count = 0
       
             def parse_args
               self.name = enactor_name
@@ -42,8 +42,8 @@ module AresMUSH
                   else
                     words_per_scene = word_count / scene_count
 
-                    tot_word_count = tot_word_count + word_count
-                    tot_scene_count = tot_scene_count + scene_count
+                    @tot_word_count = @tot_word_count + word_count
+                    @tot_scene_count = @tot_scene_count + scene_count
 
                     word_count = format_number(word_count)
                     scene_count = format_number(scene_count)
@@ -54,7 +54,7 @@ module AresMUSH
                   end
                 end
 
-                msg = "\nTotal:", tot_word_count, "words in", tot_scene_count, "scenes."
+                msg = "\nTotal:", @tot_word_count, "words in", @tot_scene_count, "scenes."
                 client.emit msg
 
               }
