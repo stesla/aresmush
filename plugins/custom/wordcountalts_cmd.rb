@@ -60,7 +60,7 @@ module AresMUSH
               alt_total_scenes = format_number(alt_total_scenes)
               total_alts = alts.size
               
-              client_emit "\n"
+              client.emit "\n"
               fmt_msg = "Total:", alt_total_words, "words in", alt_total_scenes, "scenes with", total_alts, "alts."
               msg = fmt_msg.join(" ")
               client.emit_success msg
