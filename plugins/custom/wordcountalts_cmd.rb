@@ -33,15 +33,14 @@ module AresMUSH
                   word_count = model.pose_word_count
                   scene_count = model.scenes_participated_in.size
 
+                  tot_word_count << word_count
+                  tot_scene_count << scene_count
+
                   if scene_count <1
                     msg = "#{model.name} does not have any saved scenes."
                     client.emit msg
                   else
                     words_per_scene = word_count / scene_count
-
-                    tot_word_count << word_count
-                    tot_scene_count << scene_count
-
                     word_count = format_number(word_count)
                     scene_count = format_number(scene_count)
                     words_per_scene = format_number(words_per_scene)
