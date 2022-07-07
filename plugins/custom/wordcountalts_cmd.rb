@@ -22,7 +22,7 @@ module AresMUSH
 
               ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
 
-              fmt_msg = "#{model.ooc_name}'s word count statistics:", alt_list
+              fmt_msg = "#{model.ooc_name}'s word count statistics:", alts
               msg = fmt_msg.join(" ")
               client.emit_success msg
 
