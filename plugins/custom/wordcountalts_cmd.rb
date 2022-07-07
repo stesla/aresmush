@@ -21,7 +21,7 @@ module AresMUSH
 
               ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
               
-              msg = "#{model.ooc_name}'s word count statistics:"
+              msg = "#{model.ooc_name}'s word count statistics:\n"
               client.emit_success msg
     
               end
@@ -35,17 +35,25 @@ module AresMUSH
 
                   if scene_count <1
                     msg = "#{model.name} does not have any saved scenes."
-                    client.emit_failure msg
+                    client.emit msg
                   else
                     words_per_scene = word_count / scene_count
+
+                    tot_word_count = tot_word_count + word_count
+                    tot_scene_count = tot_scene_count + scene_count
+
                     word_count = format_number(word_count)
                     scene_count = format_number(scene_count)
                     words_per_scene = format_number(words_per_scene)
-                    total_count = "#{model.name} has written", word_count, "words in", scene_count, "scenes for an average of", words_per_scene, "per scene."
-                    msg = total_count.join(" ")
-                    client.emit_success msg
+                    fmt_msg = "#{model.name} has written", word_count, "words in", scene_count, "scenes for an average of", words_per_scene, "per scene."
+                    msg = fmt_msg.join(" ")
+                    client.emit msg
                   end
                 end
+
+                msg = "\nTotal:", tot_word_count, "words in", tot_scene_count, "scenes."
+                client.emit msg
+
               }
 
             end
