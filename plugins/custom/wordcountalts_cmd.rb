@@ -23,6 +23,9 @@ module AresMUSH
               
               msg = "#{model.ooc_name}'s word count statistics:\n"
               client.emit_success msg
+
+              tot_word_count = 0
+              tot_scene_count = 0
     
               end
 
