@@ -7,3 +7,4 @@ This command lets you see how many words you (or another player) have posed over
 
 'wordcount' - Show your word count.
 'wordcount <name>' - Show another player's word count.
+'wordcount/alts' - Show your wordcount across alts. Must be linked via AresCentral.
