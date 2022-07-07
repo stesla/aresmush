@@ -57,8 +57,9 @@ module AresMUSH
               alt_total_words = $alt_tot_word_count.sum
               alt_total_scenes = $alt_tot_scene_count.sum
 
-              msg = "\nTotal:", alt_total_words, "words in", alt_total_scenes, "scenes."
-              client.emit msg
+              fmt_msg = "\nTotal:", alt_total_words, "words in", alt_total_scenes, "scenes."
+              msg = fmt_msg.join(" ")
+              client.emit_success msg
 
             end
         end
