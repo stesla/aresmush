@@ -10,6 +10,7 @@ module AresMUSH
             def handle
 
               alts = AresCentral.play_screen_alts(enactor)
+              alt_names = alts.select.all { |a| }.map { |a| "#{a.name}"}
 
               fmt_msg = "You did a thing!", "\nAlts:\n", alts.to_s
               msg = fmt_msg.join(" ")
