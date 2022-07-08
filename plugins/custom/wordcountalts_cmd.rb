@@ -7,9 +7,6 @@ module AresMUSH
 
             $alt_tot_word_count = Array.new()
             $alt_tot_scene_count = Array.new()
-
-            puts $alt_tot_word_count.clear 
-            puts $alt_tot_scene_count.clear
  
             def parse_args
               self.name = enactor_name
@@ -69,6 +66,11 @@ module AresMUSH
               client.emit_success 
 
             end
+
+            puts $alt_tot_word_count.clear 
+            puts $alt_tot_scene_count.clear
+
+
         end
     end
 end
