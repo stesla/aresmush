@@ -5,9 +5,6 @@ module AresMUSH
 
           attr_accessor :name
 
-          @alt_tot_word_count = Array.new()
-          @alt_tot_scene_count = Array.new()
-
           def parse_args
             self.name = enactor_name
           end
@@ -21,6 +18,9 @@ module AresMUSH
           end
    
           def handle
+
+            @alt_tot_word_count = Array.new()
+            @alt_tot_scene_count = Array.new()
 
             ClassTargetFinder.with_a_character(self.name, client, enactor) do |model|
             
