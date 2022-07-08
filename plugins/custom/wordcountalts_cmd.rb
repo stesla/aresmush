@@ -67,6 +67,9 @@ module AresMUSH
 
             end
 
+            puts $alt_tot_word_count.clear 
+            puts $alt_tot_scene_count.clear
+
 
         end
     end
