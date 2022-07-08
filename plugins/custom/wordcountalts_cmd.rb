@@ -5,8 +5,8 @@ module AresMUSH
 
           attr_accessor :name
 
-          @@alt_tot_word_count = Array.new()
-          @@alt_tot_scene_count = Array.new()
+          @alt_tot_word_count = Array.new()
+          @alt_tot_scene_count = Array.new()
 
           def parse_args
             self.name = enactor_name
@@ -36,8 +36,8 @@ module AresMUSH
                 word_count = model.pose_word_count
                 scene_count = model.scenes_participated_in.size
 
-                @@alt_tot_word_count << word_count
-                @@alt_tot_scene_count << scene_count
+                @alt_tot_word_count << word_count
+                @alt_tot_scene_count << scene_count
 
                 if scene_count <1
                   msg = "#{model.name} does not have any saved scenes."
@@ -54,9 +54,9 @@ module AresMUSH
               end
             }
 
-            alt_total_words = @@alt_tot_word_count.sum
+            alt_total_words = @alt_tot_word_count.sum
             alt_total_words = format_number(alt_total_words)
-            alt_total_scenes = @@alt_tot_scene_count.sum
+            alt_total_scenes = @alt_tot_scene_count.sum
             alt_total_scenes = format_number(alt_total_scenes)
             total_alts = alts.size
             
