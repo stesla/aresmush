@@ -7,6 +7,11 @@ module AresMUSH
 
             $alt_tot_word_count = Array.new()
             $alt_tot_scene_count = Array.new()
+
+            alt_total_words = $alt_tot_word_count.sum
+            testmsg = "TEST:", alt_total_words
+            fmt_testmsg = testmsg.join(" ")
+            client.emit fmt_testmsg
  
             def parse_args
               self.name = enactor_name
@@ -59,10 +64,7 @@ module AresMUSH
               alt_total_scenes = $alt_tot_scene_count.sum
               alt_total_scenes = format_number(alt_total_scenes)
               total_alts = alts.size
-
-              $alt_tot_word_count = 
-              $alt_tot_scene_count =
-          
+        
               client.emit "\n"
               fmt_msg = "Total:", alt_total_words, "words in", alt_total_scenes, "scenes with", total_alts, "alts."
               msg = fmt_msg.join(" ")
