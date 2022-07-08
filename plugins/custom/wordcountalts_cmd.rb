@@ -8,9 +8,9 @@ module AresMUSH
             $alt_tot_word_count = Array.new()
             $alt_tot_scene_count = Array.new()
 
-            $alt_tot_word_count = $alt_tot_word_count.clear 
-            $alt_tot_scene_count= $alt_tot_scene_count.clear
-  
+            $alt_tot_word_count.clear
+            $alt_tot_scene_count.clear
+ 
             def parse_args
               self.name = enactor_name
             end
