@@ -73,10 +73,6 @@ module AresMUSH
       self.swipes.find(target_id: target.id).first
     end
 
-    def swipe_with!(char)
-      self.update(swiping_with: char)
-    end
-
     def swipes_of_type(type)
       if type == :missed_connection
         self.swipes.find(missed: true)
