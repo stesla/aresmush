@@ -3,17 +3,13 @@ module AresMUSH
     class DatingAppRequestHandler
       def handle(request)
         enactor = request.enactor
-        dater = enactor.swiping_with
-
-        if dater.nil?
-          dating_alts = enactor.dating_alts
-          dater = dating_alts.empty? ? enactor : dating_alts.first
-          enactor.update(swiping_with: dater)
-        end
+        dater = Character.find_one_by_name(request.args[:dater])
+        dater ||= DateProf.can_swipe?(enactor) ? enactor : enactor.dating_alts.first
 
         error = Website.check_login(request)
         return error if error
 
+        return {error: t('dateprof.not_your_alt')} unless AresCentral.is_alt?(dater, enactor)
         return {error: t('dateprof.must_be_approved')} unless dater.is_approved?
         return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(dater)
 
