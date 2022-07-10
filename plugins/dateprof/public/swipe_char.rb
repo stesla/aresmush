@@ -3,7 +3,6 @@ module AresMUSH
     list :dating_queue, 'AresMUSH::Character'
     collection :swipes, 'AresMUSH::DateProf::Swipe'
     attribute :hide_alts, :type=> DataType::Boolean, :default => false
-    reference :swiping_with, 'AresMUSH::Character'
 
     def dating_alts
       self.alts.select {|alt| DateProf.can_swipe?(alt)}.sort {|a,b| a.name <=> b.name}
