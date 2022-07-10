@@ -9,9 +9,9 @@ module AresMUSH
         dater = Character.find_one_by_name(request.args[:dater])
         dater ||= DateProf.can_swipe?(enactor) ? enactor : enactor.dating_alts.first
 
+        return {error: t('dateprof.swiper_no_swiping')} if dater.nil?
         return {error: t('dateprof.not_your_alt')} unless AresCentral.is_alt?(dater, enactor)
         return {error: t('dateprof.must_be_approved')} unless dater.is_approved?
-        return {error: t('dateprof.swiper_no_swiping')} unless DateProf.can_swipe?(dater)
 
         build_dating_app_web_data(dater)
       end
