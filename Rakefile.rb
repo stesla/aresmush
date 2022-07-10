@@ -150,13 +150,13 @@ task :make_test_chars do
   staffer = make_test_char("Staffer")
   AresMUSH::Roles.add_role(staffer, 'admin')
 
-  (1..10).each do |i|
-    char = make_test_char("TestChar#{i}")
+  ('A'..'Z').each do |c|
+    char = make_test_char("TestChar#{c}")
     AresMUSH::Roles.add_role(char, 'approved')
   end
 
-  (1..10).each do |i|
-    char = AresMUSH::Character.find_one_by_name("TestChar#{i}")
+  ('A'..'Z').each do |c|
+    char = AresMUSH::Character.find_one_by_name("TestChar#{c}")
     while char.next_dating_profile
       target = char.next_dating_profile
       swipe = [:interested, :curious, :skip].sample
