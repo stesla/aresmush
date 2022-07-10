@@ -23,9 +23,18 @@ module AresMUSH
         return { error: error } if error
 
         begin
-          {message: dater.swipe(char, type)}
+          message = dater.swipe(char, type)
+          match = dater.match_for(char)
+          swipe = dater.swipe_for(char)
+          {
+            message: message,
+            match: match ? match.to_s.humanize.titlecase : nil,
+            swipe: { type: swipe.type.to_s.humanize.titlecase, missed: swipe.missed },
+          }
         rescue SwipeError => e
-          {error: e.message}
+          {
+            error: e.message,
+          }
         end
       end
     end
