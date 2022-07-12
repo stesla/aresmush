@@ -125,3 +125,42 @@ end
 
 task :default => 'spec:unit'
 
+def make_test_char(name)
+  char = AresMUSH::Character.new
+  char.name = name
+  char.change_password('password')
+  char.room = AresMUSH::Game.master.welcome_room
+
+  handle = AresMUSH::Handle.create(name: 'testhandle',
+                         handle_id: 'testhandleid',
+                         character: char)
+  char.update(handle: handle)
+
+  AresMUSH::Roles.add_role(char, "everyone")
+
+  return char
+end
+
+task :make_test_chars do
+  bootstrapper = AresMUSH::Bootstrapper.new()
+  bootstrapper.config_reader.load_game_config
+  bootstrapper.db.load_config
+  bootstrapper.plugin_manager.load_all
+
+  staffer = make_test_char("Staffer")
+  AresMUSH::Roles.add_role(staffer, 'admin')
+
+  ('A'..'Z').each do |c|
+    char = make_test_char("TestChar#{c}")
+    AresMUSH::Roles.add_role(char, 'approved')
+  end
+
+  ('A'..'Z').each do |c|
+    char = AresMUSH::Character.find_one_by_name("TestChar#{c}")
+    while char.next_dating_profile
+      target = char.next_dating_profile
+      swipe = [:interested, :curious, :skip].sample
+      char.swipe(target, swipe)
+    end
+  end
+end

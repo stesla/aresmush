@@ -22,11 +22,15 @@ module AresMUSH
       actor && actor.is_approved? && !actor.is_admin? && !actor.is_playerbit?
     end
 
+    def self.can_swipe_in_portal?(actor)
+      actor && !actor.dating_alts.empty?
+    end
+
     def self.show_dating_profile?(char, viewer)
       return false unless char && viewer
       return true if char.name == viewer.name
       return true if Chargen.can_approve?(viewer)
-      can_swipe?(char)
+      can_swipe_in_portal?(char)
     end
 
     def self.swiping_demographics
