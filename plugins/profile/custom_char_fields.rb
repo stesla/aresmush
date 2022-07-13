@@ -9,6 +9,7 @@ module AresMUSH
         return {
           dateprof: Website.format_markdown_for_html(char.dateprof),
           showDatingProfile: DateProf::show_dating_profile?(char, viewer),
+          canSwipe: DateProf::can_swipe?(char),
         }
       end
     
