@@ -78,7 +78,7 @@ module AresMUSH
         self.swipes.find(missed: true)
       else
         self.swipes.find(type: type)
-      end
+      end.select {|s| DateProf.can_swipe?(s.target)}
     end
 
     def matches
