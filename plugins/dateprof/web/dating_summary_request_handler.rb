@@ -17,10 +17,14 @@ module AresMUSH
             char: DateProf.format_char(alt),
             hasUnswipedCharacters: !!alt.next_dating_profile,
             matches: DateProf.format_matches(alt.matches),
+            matchCount: alt.matches.values.map(&:size).sum,
           }
         end
 
-        { alts: alts }
+        {
+          alts: alts,
+          matchCount: alts.map {|a| a[:matchCount]}.sum,
+        }
       end
     end
   end
