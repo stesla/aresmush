@@ -25,7 +25,7 @@ module AresMUSH
         self.match_for(swipe.character) == :missed_connection
       end.map do |swipe|
         swipe.character
-      end.select {|c| c.is_active?}
+      end.select {|c| DateProf.can_swipe?(c)}
     end
 
     def next_dating_profile
