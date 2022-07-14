@@ -25,11 +25,12 @@ module AresMUSH
         self.match_for(swipe.character) == :missed_connection
       end.map do |swipe|
         swipe.character
-      end
+      end.select {|c| c.is_active?}
     end
 
     def next_dating_profile
       self.refresh_dating_queue! if self.dating_queue.empty?
+      self.refresh_dating_queue! if self.dating_queue.detect {|c| !c.is_active?}
       return self.dating_queue.first
     end
 
@@ -82,7 +83,9 @@ module AresMUSH
 
     def matches
       self.swipes.reject do |swipe|
-        self.hide_alts and AresCentral.is_alt?(self, swipe.target)
+        can_swipe = DateProf.can_swipe?(swipe.target)
+        is_alt = AresCentral.is_alt?(self, swipe.target)
+        !can_swipe or (self.hide_alts and is_alt)
       end.inject({}) do |h, swipe|
         match = self.match_for(swipe.target)
         (h[match] ||= []) << swipe.target if match
