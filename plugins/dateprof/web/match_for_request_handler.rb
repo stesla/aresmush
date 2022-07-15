@@ -22,6 +22,7 @@ module AresMUSH
           match: match ? match.to_s.humanize.titlecase : nil,
           swipe: swipe ? { type: swipe.type.to_s.humanize.titlecase,  missed: swipe.missed } : nil,
           dating_alts: dater.dating_alts.map {|c| DateProf.format_char(c)},
+          matches: DateProf.profile_matches(char, enactor),
         }
       end
     end

@@ -2366,3 +2366,15 @@ ACHIEVEMENT TABLE
   border-bottom-right-radius: 0.25rem;
   color: $light-grey;
 }
+
+#dateprof-matches {
+  padding: 10px;
+}
+
+#dateprof-matches h3:first-of-type {
+  margin-top: 0px;
+}
+
+#dateprof-matches ul:last-of-type {
+  margin-bottom: 0px;
+}
