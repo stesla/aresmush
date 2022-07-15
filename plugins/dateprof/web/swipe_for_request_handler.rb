@@ -30,6 +30,7 @@ module AresMUSH
             message: message,
             match: match ? match.to_s.humanize.titlecase : nil,
             swipe: { type: swipe.type.to_s.humanize.titlecase, missed: swipe.missed },
+            matches: DateProf::profile_matches(char, enactor),
           }
         rescue SwipeError => e
           {

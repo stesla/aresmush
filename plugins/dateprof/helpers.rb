@@ -33,6 +33,13 @@ module AresMUSH
       can_swipe_in_portal?(char)
     end
 
+    def self.profile_matches(char, viewer)
+      matches = char.matches.transform_values do |matches|
+        matches.select {|c| AresCentral.is_alt?(viewer, c)}
+      end
+      format_matches(matches)
+    end
+
     def self.swiping_demographics
       Global.read_config('dateprof', 'demographics') || ['gender']
     end
