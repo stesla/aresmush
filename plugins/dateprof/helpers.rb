@@ -35,8 +35,9 @@ module AresMUSH
 
     def self.profile_matches(char, viewer)
       matches = char.matches.transform_values do |matches|
-        matches.select {|c| AresCentral.is_alt?(viewer, c)}
-      end
+        matches = matches.select {|c| AresCentral.is_alt?(viewer, c)}
+        matches.empty? ? nil : matches
+      end.compact
       format_matches(matches)
     end
 
