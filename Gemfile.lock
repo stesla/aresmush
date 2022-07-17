@@ -87,6 +87,7 @@ GEM
       rack-protection (= 2.0.5)
       tilt (~> 2.0)
     sinatra-cross_origin (0.4.0)
+    stackprof (0.2.19)
     stal (0.3.0)
       redic (~> 1.5)
     therubyracer (0.12.3)
@@ -131,8 +132,9 @@ DEPENDENCIES
   sassc (~> 2.2.1)
   sinatra (~> 2.0.4)
   sinatra-cross_origin (~> 0.4.0)
+  stackprof (~> 0.2.19)
   thin (~> 1.8.1)
   timezone (~> 1.2.10)
 
 BUNDLED WITH
-   2.2.19
+   2.3.9
