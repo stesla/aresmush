@@ -84,17 +84,16 @@ module AresMUSH
     end
 
     def matches
-      @matches ||= self.swipes.reject do |swipe|
-        can_swipe = DateProf.can_swipe?(swipe.target)
-        is_alt = AresCentral.is_alt?(self, swipe.target)
-        !can_swipe or (self.hide_alts and is_alt)
-      end.inject({}) do |h, swipe|
-        match = self.match_for(swipe.target)
-        (h[match] ||= []) << swipe.target if match
-        h
-      end.tap do |h|
+      @matches ||= begin
+        h = Hash.new {|h,k| h[k] = []}
+        self.swipes.each do |swipe|
+          next unless DateProf.can_swipe?(swipe.target)
+          next if self.hide_alts && AresCentral.is_alt?(self, swipe.target)
+          match = self.match_for(swipe.target)
+          h[match] << swipe.target if match
+        end
         missed = self.missed_connections
-        h[:missed_connection] = self.missed_connections unless missed.empty?
+        h.merge({missed_connection: missed.empty? ? nil : missed}).compact
       end
     end
 
