@@ -90,7 +90,8 @@ module AresMUSH
         self.swipes.each do |swipe|
           next unless DateProf.can_swipe?(swipe.target)
           next if self.hide_alts && AresCentral.is_alt?(self, swipe.target)
-          match = self.match_for(swipe.target)
+          backswipe = swipe.target.swipe_for(self)
+          match = DateProf.match_for_swipes(swipe, backswipe)
           h[match] << swipe.target if match
         end
         missed = self.missed_connections
