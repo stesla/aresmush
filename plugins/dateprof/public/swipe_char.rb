@@ -30,7 +30,9 @@ module AresMUSH
 
     def next_dating_profile
       self.refresh_dating_queue! if self.dating_queue.empty?
-      self.refresh_dating_queue! if self.dating_queue.detect {|c| !DateProf.can_swipe?(c)}
+      while self.dating_queue.first and !DateProf.can_swipe?(self.dating_queue.first)
+        self.dating_queue.delete(self.dating_queue.first)
+      end
       return self.dating_queue.first
     end
 
