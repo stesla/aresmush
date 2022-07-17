@@ -5,7 +5,7 @@ module AresMUSH
     attribute :hide_alts, :type=> DataType::Boolean, :default => false
 
     def dating_alts
-      self.alts.select {|alt| DateProf.can_swipe?(alt)}.sort {|a,b| a.name <=> b.name}
+      @dating_alts ||= self.alts.select {|alt| DateProf.can_swipe?(alt)}.sort {|a,b| a.name <=> b.name}
     end
 
     def hide_alts!(val, all=false)
@@ -21,7 +21,7 @@ module AresMUSH
     end
 
     def missed_connections
-      AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
+      @missed_connections ||= AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
         self.match_for(swipe.character) == :missed_connection
       end.map do |swipe|
         swipe.character
@@ -84,7 +84,7 @@ module AresMUSH
     end
 
     def matches
-      self.swipes.reject do |swipe|
+      @matches ||= self.swipes.reject do |swipe|
         can_swipe = DateProf.can_swipe?(swipe.target)
         is_alt = AresCentral.is_alt?(self, swipe.target)
         !can_swipe or (self.hide_alts and is_alt)
