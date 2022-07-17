@@ -73,5 +73,19 @@ module AresMUSH
         DateProf.format_char_list(type, matches[type])
       end.compact
     end
+
+    def self.match_for_swipes(character, target)
+      if (character.nil? || character.type == :skip) && target && target.missed
+        return :missed_connection
+      elsif character.nil? or target.nil?
+        return nil
+      end
+      case [character.type, target.type]
+      when [:interested, :interested] then :solid
+      when [:interested, :curious], [:curious, :interested] then :okay
+      when [:curious, :curious] then :maybe
+      else nil
+      end
+    end
   end
 end

@@ -99,18 +99,7 @@ module AresMUSH
     def match_for(target)
       me = self.swipe_for(target)
       them = target.swipe_for(self)
-
-      if (me.nil? || me.type == :skip) && them && them.missed
-        return :missed_connection
-      elsif me.nil? or them.nil?
-        return nil
-      end
-      case [me.type, them.type]
-      when [:interested, :interested] then :solid
-      when [:interested, :curious], [:curious, :interested] then :okay
-      when [:curious, :curious] then :maybe
-      else nil
-      end
+      DateProf.match_for_swipes(me, them)
     end
 
     private
