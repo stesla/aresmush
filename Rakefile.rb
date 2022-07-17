@@ -141,7 +141,9 @@ def make_test_char(name)
   return char
 end
 
-task :make_test_chars do
+task :make_test_chars, [:start, :end] do |t, args|
+  args.with_defaults(start: 'A', end: 'Z')
+
   bootstrapper = AresMUSH::Bootstrapper.new()
   bootstrapper.config_reader.load_game_config
   bootstrapper.db.load_config
@@ -150,17 +152,19 @@ task :make_test_chars do
   staffer = make_test_char("Staffer")
   AresMUSH::Roles.add_role(staffer, 'admin')
 
-  ('A'..'Z').each do |c|
+  (args.start..args.end).each do |c|
     char = make_test_char("TestChar#{c}")
     AresMUSH::Roles.add_role(char, 'approved')
+    puts "Created TestChar#{c}"
   end
 
-  ('A'..'Z').each do |c|
+  (args.start..args.end).each do |c|
     char = AresMUSH::Character.find_one_by_name("TestChar#{c}")
     while char.next_dating_profile
       target = char.next_dating_profile
       swipe = [:interested, :curious, :skip].sample
       char.swipe(target, swipe)
+      puts "#{char.name} swiped #{swipe} on #{target.name}"
     end
   end
 end
