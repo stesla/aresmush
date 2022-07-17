@@ -37,7 +37,8 @@ module AresMUSH
     end
 
     def refresh_dating_queue!
-      queue = Character.all.select do |model|
+      ids = Character.all.ids - self.swipes.map {|s| s.target.id}
+      queue = Character.fetch(ids).select do |model|
         next if model.id == self.id
         next unless DateProf.can_swipe?(model)
         next if hide_alts and AresCentral.is_alt?(self, model)
