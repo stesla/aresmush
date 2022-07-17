@@ -74,6 +74,24 @@ module AresMUSH
       end.compact
     end
 
+    def self.format_match_summary(character)
+      alts = character.dating_alts.sort do |a,b|
+        a.name <=> b.name
+      end.map do |alt|
+        matches = alt.matches
+        {
+          char: DateProf.format_char(alt),
+          hasUnswipedCharacters: !!alt.next_dating_profile,
+          matches: DateProf.format_matches(matches),
+          matchCount: matches.values.map(&:size).sum,
+        }
+      end
+      {
+        alts: alts,
+        matchCount: alts.map {|a| a[:matchCount]}.sum,
+      }
+    end
+
     def self.match_for_swipes(character, target)
       if (character.nil? || character.type == :skip) && target && target.missed
         return :missed_connection
