@@ -5,7 +5,7 @@ module AresMUSH
     attribute :hide_alts, :type=> DataType::Boolean, :default => false
 
     def dating_alts
-      self.alts.select {|alt| DateProf.can_swipe?(alt)}.sort {|a,b| a.name <=> b.name}
+      @dating_alts ||= self.alts.select {|alt| DateProf.can_swipe?(alt)}.sort {|a,b| a.name <=> b.name}
     end
 
     def hide_alts!(val, all=false)
@@ -21,7 +21,7 @@ module AresMUSH
     end
 
     def missed_connections
-      AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
+      @missed_connections ||= AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
         self.match_for(swipe.character) == :missed_connection
       end.map do |swipe|
         swipe.character
@@ -30,12 +30,15 @@ module AresMUSH
 
     def next_dating_profile
       self.refresh_dating_queue! if self.dating_queue.empty?
-      self.refresh_dating_queue! if self.dating_queue.detect {|c| !DateProf.can_swipe?(c)}
+      while self.dating_queue.first and !DateProf.can_swipe?(self.dating_queue.first)
+        self.dating_queue.delete(self.dating_queue.first)
+      end
       return self.dating_queue.first
     end
 
     def refresh_dating_queue!
-      queue = Character.all.select do |model|
+      ids = Character.all.ids - self.swipes.map {|s| s.target.id}
+      queue = Character.fetch(ids).select do |model|
         next if model.id == self.id
         next unless DateProf.can_swipe?(model)
         next if hide_alts and AresCentral.is_alt?(self, model)
@@ -82,35 +85,24 @@ module AresMUSH
     end
 
     def matches
-      self.swipes.reject do |swipe|
-        can_swipe = DateProf.can_swipe?(swipe.target)
-        is_alt = AresCentral.is_alt?(self, swipe.target)
-        !can_swipe or (self.hide_alts and is_alt)
-      end.inject({}) do |h, swipe|
-        match = self.match_for(swipe.target)
-        (h[match] ||= []) << swipe.target if match
-        h
-      end.tap do |h|
+      @matches ||= begin
+        h = Hash.new {|h,k| h[k] = []}
+        self.swipes.each do |swipe|
+          next unless DateProf.can_swipe?(swipe.target)
+          next if self.hide_alts && AresCentral.is_alt?(self, swipe.target)
+          backswipe = swipe.target.swipe_for(self)
+          match = DateProf.match_for_swipes(swipe, backswipe)
+          h[match] << swipe.target if match
+        end
         missed = self.missed_connections
-        h[:missed_connection] = self.missed_connections unless missed.empty?
+        h.merge({missed_connection: missed.empty? ? nil : missed}).compact
       end
     end
 
     def match_for(target)
       me = self.swipe_for(target)
       them = target.swipe_for(self)
-
-      if (me.nil? || me.type == :skip) && them && them.missed
-        return :missed_connection
-      elsif me.nil? or them.nil?
-        return nil
-      end
-      case [me.type, them.type]
-      when [:interested, :interested] then :solid
-      when [:interested, :curious], [:curious, :interested] then :okay
-      when [:curious, :curious] then :maybe
-      else nil
-      end
+      DateProf.match_for_swipes(me, them)
     end
 
     private

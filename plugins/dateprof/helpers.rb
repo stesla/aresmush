@@ -19,7 +19,7 @@ module AresMUSH
     end
 
     def self.can_swipe?(actor)
-      actor && actor.is_active? && actor.is_approved? && !actor.is_admin? && !actor.is_playerbit?
+      actor && actor.is_active? && actor.is_approved?
     end
 
     def self.can_swipe_in_portal?(actor)
@@ -72,6 +72,38 @@ module AresMUSH
         next unless matches[type]
         DateProf.format_char_list(type, matches[type])
       end.compact
+    end
+
+    def self.format_match_summary(character)
+      alts = character.dating_alts.sort do |a,b|
+        a.name <=> b.name
+      end.map do |alt|
+        matches = alt.matches
+        {
+          char: DateProf.format_char(alt),
+          hasUnswipedCharacters: !!alt.next_dating_profile,
+          matches: DateProf.format_matches(matches),
+          matchCount: matches.values.map(&:size).sum,
+        }
+      end
+      {
+        alts: alts,
+        matchCount: alts.map {|a| a[:matchCount]}.sum,
+      }
+    end
+
+    def self.match_for_swipes(character, target)
+      if (character.nil? || character.type == :skip) && target && target.missed
+        return :missed_connection
+      elsif character.nil? or target.nil?
+        return nil
+      end
+      case [character.type, target.type]
+      when [:interested, :interested] then :solid
+      when [:interested, :curious], [:curious, :interested] then :okay
+      when [:curious, :curious] then :maybe
+      else nil
+      end
     end
   end
 end
