@@ -19,7 +19,7 @@ module AresMUSH
     end
 
     def self.can_swipe?(actor)
-      actor && actor.is_active? && actor.is_approved?
+      actor && actor.can_swipe && actor.idle_state.nil? && !actor.is_npc
     end
 
     def self.can_swipe_in_portal?(actor)
