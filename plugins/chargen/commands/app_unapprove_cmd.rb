@@ -28,6 +28,7 @@ module AresMUSH
           model.update(approval_job: nil)
           model.update(chargen_locked: false)
           Roles.remove_role(model, "approved")
+          Chargen.custom_unapproval(model)
           client.emit_success t('chargen.app_unapproved', :name => model.name)
         end
       end
