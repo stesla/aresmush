@@ -7,6 +7,7 @@ module AresMUSH
       reference :target, 'AresMUSH::Character'
       attribute :type, :type => DataType::Symbol
       attribute :missed, :type => DataType::Boolean, :default => false
+      attribute :match, :type => DataType::Symbol
 
       index :type
       index :missed
