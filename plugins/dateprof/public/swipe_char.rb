@@ -105,7 +105,6 @@ module AresMUSH
 
     def match_for(target)
       swipe = self.swipe_for(target)
-      swipe ? swipe.match : target.match_for(self)
       return swipe.match unless swipe.nil?
       backswipe = target.swipe_for(self)
       return DateProf.match_for_swipes(swipe, backswipe)
