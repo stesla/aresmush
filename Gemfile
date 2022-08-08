@@ -17,7 +17,7 @@ gem 'timezone', '~> 1.2.10'
 gem 'dentaku', '~>3.1'
 gem 'json', '~> 2.3.1'
 gem 'redcarpet', '~> 3.5.1'
-gem 'sinatra', '~> 2.0.4'
+gem 'sinatra', '~> 2.2.2'
 gem 'thin', '~> 1.8.1'
 gem 'sinatra-cross_origin', '~>0.4.0'
 gem 'aws-sdk-s3', '~> 1.8.2'
@@ -27,6 +27,6 @@ gem 'diffy', '~> 3.2.0'
 gem 'sassc', '~> 2.2.1'
 gem 'htmlentities', '~>4.3.4'
 gem 'handlebars', '~>0.8.0'
-gem "rack", ">= 2.1.4"
 
 gem "stackprof", "~> 0.2.19"
+gem "rack", ">= 2.2.4"
