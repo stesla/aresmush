@@ -155,6 +155,7 @@ task :make_test_chars, [:start, :end] do |t, args|
   (args.start..args.end).each do |c|
     char = make_test_char("TestChar#{c}")
     AresMUSH::Roles.add_role(char, 'approved')
+    char.update(can_swipe: true)
     puts "Created TestChar#{c}"
   end
 
