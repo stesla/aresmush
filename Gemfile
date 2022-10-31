@@ -28,4 +28,5 @@ gem 'diffy', '~> 3.4.1'
 gem 'sassc', '~> 2.4.0'
 gem 'htmlentities', '~>4.3.4'
 gem 'handlebars-engine', '~>0.3'
-gem "rack", ">= 2.2.4"
+gem 'rack', '>= 2.2.4'
+gem 'libv8-node', '>=16.10.0.0'
