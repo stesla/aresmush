@@ -93,7 +93,8 @@ module AresMUSH
     end
 
     def self.match_for_swipes(character, target)
-      if (character.nil? || character.type == :skip) && target && target.missed
+      if character && character.missed && (target.nil? || target.type == :skip) or
+         target && target.missed && (character.nil? || character.type == :skip)
         return :missed_connection
       elsif character.nil? or target.nil?
         return nil
