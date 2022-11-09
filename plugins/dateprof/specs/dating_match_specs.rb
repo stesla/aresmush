@@ -16,9 +16,9 @@ module AresMUSH
           when :nil then
             nil
           when :missed then
-            DateProf::Swipe.new(type: :interested, missed: true)
+            DatingSwipe.new(type: :interested, missed: true)
           else
-            DateProf::Swipe.new(type: type)
+            DatingSwipe.new(type: type)
           end
         }
 

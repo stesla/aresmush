@@ -3,8 +3,8 @@ module AresMUSH
     include ObjectModel
     reference :character, 'AresMUSH::Character'
     reference :target, 'AresMUSH::Character'
-    reference :swipe, 'AresMUSH::DateProf::Swipe'
-    reference :backswipe, 'AresMUSH::DateProf::Swipe'
+    reference :swipe, 'AresMUSH::DatingSwipe'
+    reference :backswipe, 'AresMUSH::DatingSwipe'
     attribute :value, :type => DataType::Symbol
 
     before_save :update_value!

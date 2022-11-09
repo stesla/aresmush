@@ -1,7 +1,7 @@
 module AresMUSH
   class Character
     list :dating_queue, 'AresMUSH::Character'
-    collection :swipes, 'AresMUSH::DateProf::Swipe'
+    collection :swipes, 'AresMUSH::DatingSwipe'
     attribute :hide_alts, :type=> DataType::Boolean, :default => false
     attribute :can_swipe, :type=> DataType::Boolean, :default => false
 
@@ -22,7 +22,7 @@ module AresMUSH
     end
 
     def missed_connections
-      @missed_connections ||= AresMUSH::DateProf::Swipe.find(target_id: self.id, missed: true).select do |swipe|
+      @missed_connections ||= DatingSwipe.find(target_id: self.id, missed: true).select do |swipe|
         self.match_for(swipe.character) == :missed_connection
       end.map do |swipe|
         swipe.character
@@ -53,7 +53,7 @@ module AresMUSH
 
       me = swipe_for(target)
       if me.nil?
-        me = AresMUSH::DateProf::Swipe.create(
+        me = DatingSwipe.create(
           character_id: self.id,
           target_id: target.id,
           type: type,
