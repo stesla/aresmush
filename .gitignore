@@ -29,7 +29,7 @@ _last_install.txt
 nginx.default
 sitemap.xml
 redis/
-.bundle/
+.bundle
 
 # Process ID scripts
 # -----------------------------
