@@ -86,9 +86,18 @@ module AresMUSH
      
       def foyer_status(e, i)
         chars = e.dest.characters
+        if (!e.lock_keys.empty?)
+          status = t('describe.foyer_room_locked')
+        elsif (chars.count == 0)
+          status = t('describe.foyer_room_free')
+        elsif (chars.select { |c| Login.find_client(c) }.count > 0 )
+          status = t('describe.foyer_room_in_use')
+        else
+          status = t('describe.foyer_room_occupied')
+        end
         linebreak = i % 2 == 0 ? "%R" : ""
-        room_name = "#{exit_destination(e)}"
-        "#{linebreak}%xh#{exit_name(e)}%xn  #{left(room_name,30)}"
+        room_name = "#{exit_destination(e)} (#{status})"
+        "#{linebreak}%xh#{exit_name(e)}%xn #{left(room_name,29)}"
       end
       
       def char_shortdesc(char)
