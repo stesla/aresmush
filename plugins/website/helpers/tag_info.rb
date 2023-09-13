@@ -38,6 +38,8 @@ module AresMUSH
       case tag.content_type
       when "AresMUSH::Character"
         return "char"
+      when "AresMUSH::ClassifiedsAd"
+        return "classifieds-ad"
       when "AresMUSH::WikiPage"
         return "wiki-page"
       when "AresMUSH::Event"
@@ -71,6 +73,8 @@ module AresMUSH
       case tag.content_type
       when "AresMUSH::Character"
         return "Characters"
+      when "AresMUSH::ClassifiedsAd"
+        return "Classifieds"
       when "AresMUSH::WikiPage"
         return "Wiki Pages"
       when "AresMUSH::Event"
