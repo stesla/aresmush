@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), *%w[engine]))
 
 require 'aresmush'
+require 'betterlorem'
 require 'erubis'
 require 'rspec'
 require 'rspec/core/rake_task'
@@ -125,3 +126,24 @@ end
 
 task :default => 'spec:unit'
 
+namespace :mosaic do
+  task :create_ads, [:num,:char] do |t, args|
+    minimal_boot
+    args.with_defaults(:num => 20, :char => 'Headwiz')
+    all_tags = BetterLorem.w(15, true, true).split().map do |s|
+       s.sub(/\W/, '').downcase
+    end.select do |s|
+      s.length >= 3
+    end
+    char = AresMUSH::Character.find_one_by_name(args[:char])
+    random = Random.new
+    args[:num].to_i.times do
+      title = BetterLorem.w(random.rand(3..7), true, true)
+      text = BetterLorem.p(random.rand(1..3), true)
+      tags = all_tags.shuffle.take(random.rand(1..5))
+      ad = AresMUSH::ClassifiedsAd.create(title: title, text: text, author: char)
+      AresMUSH::Website.update_tags(ad, tags)
+      puts "Created '#{title}' with tags (#{tags})."
+    end
+  end
+end
