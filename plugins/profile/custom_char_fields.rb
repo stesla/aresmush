@@ -25,10 +25,9 @@ module AresMUSH
         return { dateprof: Website.format_input_for_html(char.dateprof) }
       end
       
-      # Custom fields will be in char_data[:custom]
-      # Example: char.update(goals: char_data[:custom][:goals])
+      # Deprecated - use save_fields_from_profile_edit2 instead
       def self.save_fields_from_profile_edit(char, char_data)
-        char.update(dateprof: char_data[:custom][:dateprof])
+        return []
       end
       
       # Save fields and return an array of any error messages.
@@ -38,6 +37,22 @@ module AresMUSH
         char.update(dateprof: chargen_data[:custom][:dateprof])
         return []
       end
+      
+      # Saves fields from profile editing.
+      #
+      # @param [Character] char - The character being updated.
+      # @param [Character] enactor - The character triggering the update.
+      # @param [Hash] char_data - A hash of character fields and values. Your custom fields
+      #    will be in char_data[:custom]. Multi-line text strings should be formatted for MUSH.
+      #
+      # @return [Array] - A list of error messages. Return an empty array ([]) if there are no errors.
+      # @example
+      #        char.update(goals: Website.format_input_for_mush(char_data[:custom][:goals]))
+      #        return []
+      def self.save_fields_from_profile_edit2(char, enactor, char_data)
+        char.update(dateprof: char_data[:custom][:dateprof])
+      end
+
       
     end
   end
